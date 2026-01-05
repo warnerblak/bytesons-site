@@ -1,0 +1,142 @@
+/* Bytesons.xyz — minimal, permanent, quiet */
+
+:root{
+  --bg:#000000;
+  --fg:#f2f2f2;
+  --muted:rgba(242,242,242,.78);
+  --faint:rgba(242,242,242,.55);
+  --max: 760px;
+  --pad: 24px;
+  --section: 64px;
+  --section-lg: 104px;
+}
+
+*{ box-sizing:border-box; }
+
+html,body{ height:100%; }
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--fg);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
+  line-height:1.7;
+}
+
+a{
+  color:var(--fg);
+  text-decoration:none;
+  border-bottom:1px solid rgba(242,242,242,.35);
+}
+a:hover{ border-bottom-color: rgba(242,242,242,.75); }
+
+.wrap{
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 52px var(--pad) 80px;
+}
+
+.nav{
+  display:flex;
+  gap:18px;
+  flex-wrap:wrap;
+  align-items:center;
+  margin-bottom: 44px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 14px;
+  letter-spacing: .02em;
+}
+
+.nav a{
+  border-bottom:1px solid transparent;
+  padding-bottom:2px;
+  opacity:.85;
+}
+.nav a:hover{ opacity:1; border-bottom-color: rgba(242,242,242,.55); }
+.nav a.active{ opacity:1; border-bottom-color: rgba(242,242,242,.9); }
+
+h1,h2{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-weight: 400;
+  margin: 0 0 18px;
+}
+
+h1{
+  font-size: 48px;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+h2{
+  font-size: 28px;
+  line-height: 1.3;
+  margin-top: 0;
+}
+
+p{ margin: 0 0 22px; font-size: 18px; }
+
+.small{ font-size:14px; letter-spacing:.08em; text-transform:lowercase; opacity:.7; }
+.sub{ font-size:16px; color:var(--muted); }
+
+.section{ margin: var(--section) 0; }
+.section.lg{ margin: var(--section-lg) 0; }
+
+.hr{
+  margin: var(--section-lg) 0;
+  text-align:center;
+  color: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+}
+
+.list{
+  margin: 18px 0 26px 0;
+  padding-left: 18px;
+}
+.list li{ margin: 10px 0; color: var(--muted); font-size: 18px; }
+
+.kicker{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 14px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 12px;
+}
+
+.footer{
+  margin-top: var(--section-lg);
+  padding-top: 24px;
+  color: var(--faint);
+  font-size: 14px;
+}
+
+/* simple “hero” */
+.hero{
+  margin: 74px 0 var(--section-lg);
+}
+.hero h1{ margin-bottom: 18px; }
+.hero .sub{ max-width: 44ch; }
+
+/* manifesto styling */
+.manifesto p{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 20px;
+  line-height: 1.55;
+  color: var(--fg);
+}
+.manifesto .muted{
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.center{ text-align:center; }
+
+@media (max-width: 520px){
+  .wrap{ padding-top: 36px; }
+  h1{ font-size: 34px; }
+  h2{ font-size: 24px; }
+  p{ font-size: 17px; }
+  .manifesto p{ font-size: 18px; }
+}
