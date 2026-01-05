@@ -154,3 +154,23 @@ p{ margin: 0 0 22px; font-size: 18px; }
   height: 100%;
   border: 0;
 }
+.sample{
+  display: inline-block;
+  margin-top: 22px;
+  text-align: left;
+  border-bottom: none;
+}
+
+.sample img{
+  display: block;
+  width: 220px;          /* “sample size” */
+  max-width: 100%;
+  border-radius: 14px;
+  border: 1px solid rgba(242,242,242,.15);
+}
+
+.sample .small{
+  display: inline-block;
+  margin-top: 10px;
+  opacity: .7;
+}
