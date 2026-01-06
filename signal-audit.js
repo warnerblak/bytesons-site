@@ -231,8 +231,6 @@ function disconnect() {
   setStatus("Disconnected.");
   resetUI();
 
-  // Optional: explain true disconnect behavior
-  setStatusLink("Manage connected sites in your wallet →", "https://metamask.io/faqs/");
 }
 
   
