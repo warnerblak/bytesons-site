@@ -108,6 +108,27 @@
 
     /* Dusk: subtle purple tone */
     .p-dusk     { filter: hue-rotate(255deg) saturate(0.8) brightness(1.0) contrast(1.0); }
+
+    /* Wrapper filter layer so hue shift stacks on top of the palette filter */
+.study-stage{
+  --shift: 0deg;
+  filter: hue-rotate(var(--shift));
+  transition: filter 120ms linear;
+}
+
+/* Slider styling (minimal) */
+.hue-wrap{
+  margin-top: 14px;
+  border-top: 1px solid rgba(242,242,242,.12);
+  padding-top: 14px;
+}
+
+.hue-slider{
+  width: 100%;
+  margin-top: 10px;
+  accent-color: rgba(242,242,242,.85); /* keeps it neutral */
+}
+
   </style>
 </head>
 
@@ -165,13 +186,16 @@
         </div>
 
         <div class="study-canvas">
-          <img
-            id="artifact"
-            class="study-img p-original"
-            src="/assets/img/byteson-palette.jpeg"
-            alt="Bytesons palette study base artifact"
-          />
-        </div>
+  <div id="stage" class="study-stage">
+    <img
+      id="artifact"
+      class="study-img p-original"
+      src="assets/img/byteson-palette.png"
+      alt="Bytesons palette study base artifact"
+    />
+  </div>
+</div>
+
 
         <div class="swatches" role="group" aria-label="Palette controls">
           <button class="swatch active" data-p="original" type="button">
@@ -199,6 +223,28 @@
             Dusk
           </button>
         </div>
+
+        <div class="hue-wrap">
+  <div class="small" style="opacity:.85;">
+    <strong>Hue</strong> — <span id="hueVal">0°</span>
+  </div>
+
+  <input
+    id="hueSlider"
+    type="range"
+    min="-30"
+    max="30"
+    step="1"
+    value="0"
+    aria-label="Hue shift slider"
+    class="hue-slider"
+  />
+
+  <div class="small" style="opacity:.65; line-height:1.6;">
+    Subtle adjustment within the active palette. Resets when you change palettes.
+  </div>
+</div>
+
 
         <p class="small hint">
           Note: the palettes are intentionally restrained. This is a study of signal, not a customization tool.
