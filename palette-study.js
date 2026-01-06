@@ -9,11 +9,10 @@
 
   const nameMap = {
     original: "Original",
-    mono: "Monochrome",
-    gray: "Grayscale",
     terminal: "Terminal",
     bone: "Bone",
     dusk: "Dusk",
+    pastels: "Pastels",
   };
 
   function setHue(deg) {
@@ -22,22 +21,16 @@
     if (hueVal) hueVal.textContent = `${deg}°`;
   }
 
-  function resetHue() {
-    if (hueSlider) hueSlider.value = "0";
-    setHue(0);
-  }
-
   function setPalette(key) {
     if (!img) return;
 
     // Clear existing palette classes
     img.classList.remove(
       "p-original",
-      "p-mono",
-      "p-gray",
       "p-terminal",
       "p-bone",
-      "p-dusk"
+      "p-dusk",
+      "p-pastels"
     );
 
     img.classList.add(`p-${key}`);
@@ -52,8 +45,8 @@
       b.setAttribute("aria-pressed", isActive ? "true" : "false");
     });
 
-    // Reset hue when changing palette (keeps the study readable)
-    resetHue();
+    // IMPORTANT: do NOT reset hue when switching palettes
+    // (user keeps their chosen hue offset)
   }
 
   // Palette button clicks
@@ -75,5 +68,6 @@
 
   // Initialize
   setPalette("original");
-  setHue(0);
+  const initial = hueSlider ? parseInt(hueSlider.value, 10) || 0 : 0;
+  setHue(initial);
 })();
