@@ -1,10 +1,13 @@
 (() => {
   const statusEl = document.getElementById("status");
   const statusLinkEl = document.getElementById("statusLink");
+
   const connectBtn = document.getElementById("connect");
   const checkBtn = document.getElementById("check");
+
   const tool = document.getElementById("tool");
   const runBtn = document.getElementById("run");
+
   const outWrap = document.getElementById("outWrap");
   const out = document.getElementById("out");
 
@@ -12,26 +15,51 @@
   const projectLink = document.getElementById("projectLink");
   const projectCopy = document.getElementById("projectCopy");
 
-  // Normalize Worker URL (removes trailing slash if present)
-  const WORKER = (window.WORKER_URL || "").replace(/\/+$/, "");
+  // Normalize Worker URL (remove trailing slash if present)
+  const API = (window.WORKER_URL || "").replace(/\/+$/, "");
 
   let address = null;
 
-  const setStatus = (t) => {   statusEl.textContent = t || "";   if (statusLinkEl) statusLinkEl.innerHTML = ""; };
+  const setStatus = (text) => {
+    statusEl.textContent = text || "";
+    if (statusLinkEl) statusLinkEl.innerHTML = "";
+  };
 
-  function requireWorker() {
-    if (!WORKER || WORKER.includes("YOURNAME")) {
+  const setLink = (href, label) => {
+    if (!statusLinkEl) return;
+    statusLinkEl.innerHTML = "";
+    const a = document.createElement("a");
+    a.href = href;
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    a.textContent = label;
+    statusLinkEl.appendChild(a);
+  };
+
+  const requireApi = () => {
+    if (!API || API.includes("YOURNAME")) {
       setStatus("Set your Worker URL in signal-audit.html (window.WORKER_URL).");
       return false;
     }
     return true;
+  };
+
+  async function fetchWithTimeout(url, options = {}, ms = 12000) {
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), ms);
+    try {
+      const res = await fetch(url, { ...options, signal: controller.signal });
+      return res;
+    } finally {
+      clearTimeout(id);
+    }
   }
 
-  async function connect() {
-    if (!requireWorker()) return;
+  async function connectWallet() {
+    if (!requireApi()) return;
 
     if (!window.ethereum) {
-      setStatus("No wallet detected. Use MetaMask / Coinbase Wallet browser or install a wallet extension.");
+      setStatus("No wallet detected. Use a wallet extension (desktop) or a wallet browser.");
       return;
     }
 
@@ -45,75 +73,53 @@
         return;
       }
 
-      setStatus(`Connected: ${address.slice(0, 6)}…${address.slice(-4)}`);
+      setStatus(`Wallet connected: ${address.slice(0, 6)}…${address.slice(-4)}`);
       checkBtn.disabled = false;
-    } catch (err) {
-      setStatus("Wallet connection rejected.");
+    } catch {
+      setStatus("Wallet connection cancelled.");
     }
   }
 
-  async function fetchWithTimeout(url, ms = 12000) {
-    const controller = new AbortController();
-    const id = setTimeout(() => controller.abort(), ms);
-    try {
-      const res = await fetch(url, { signal: controller.signal });
-      return res;
-    } finally {
-      clearTimeout(id);
-    }
-  }
-
-  async function checkHolder() {
-    if (!requireWorker()) return;
+  async function verifyHolderAccess() {
+    if (!requireApi()) return;
     if (!address) return setStatus("Connect wallet first.");
 
-    const endpoint = `${WORKER}/test-holder?address=${encodeURIComponent(address)}`;
-    setStatus(`Checking holder status…`);
+    setStatus("Verifying holder access…");
 
     try {
-      // Try call with timeout so it never “hangs”
-      const res = await fetchWithTimeout(endpoint, 12000);
+      const url = `${API}/test-holder?address=${encodeURIComponent(address)}`;
+      const res = await fetchWithTimeout(url, {}, 12000);
 
       if (!res.ok) {
         const txt = await res.text().catch(() => "");
-        setStatus(`Holder check failed (${res.status}). ${txt || "Open the Worker URL to verify it’s live."}`);
+        setStatus(`Holder check failed (${res.status}). ${txt || "Try again."}`);
+        tool.style.display = "none";
         return;
       }
 
       const data = await res.json();
 
       if (data.isHolder) {
-        setStatus("Holder confirmed. Tool unlocked.");
+        setStatus("Access confirmed.");
         tool.style.display = "block";
-      } else {
-        setStatus("Access requires at least 1 Byteson.");
-tool.style.display = "none";
-
-if (statusLinkEl) {
-  const a = document.createElement("a");
-  a.href = "https://opensea.io/collection/bytesons";
-  a.target = "_blank";
-  a.rel = "noopener noreferrer";
-  a.textContent = "View the collection on OpenSea";
-  statusLinkEl.appendChild(a);
-}
-
-    } catch (err) {
-      // This is what we NEED to see instead of “stuck”
-      if (String(err).includes("AbortError")) {
-        setStatus("Holder check timed out. Try again (or switch network / browser).");
-      } else {
-        setStatus("Holder check blocked (network/CORS). Hard refresh and try again.");
+        return;
       }
 
-      // Bonus: show the exact URL so you can open it manually
-      console.log("Holder endpoint:", endpoint);
-      console.log("Error:", err);
+      setStatus("Access requires at least 1 Byteson.");
+      setLink("https://opensea.io/collection/bytesons", "View the collection on OpenSea");
+      tool.style.display = "none";
+    } catch (err) {
+      if (String(err).includes("AbortError")) {
+        setStatus("Holder check timed out. Try again.");
+      } else {
+        setStatus("Holder check blocked (network/CORS). If you’re on mobile, try a desktop wallet extension.");
+      }
+      tool.style.display = "none";
     }
   }
 
   async function runAudit() {
-    if (!requireWorker()) return;
+    if (!requireApi()) return;
     if (!address) return setStatus("Connect wallet first.");
 
     const payload = {
@@ -123,45 +129,50 @@ if (statusLinkEl) {
       projectCopy: projectCopy.value.trim(),
     };
 
-    if (!payload.projectCopy) return setStatus("Paste your project copy first.");
+    if (!payload.projectCopy) return setStatus("Paste the text you want audited first.");
 
-    setStatus("Generating…");
+    setStatus("Reviewing signal…");
     runBtn.disabled = true;
 
     try {
-      const res = await fetchWithTimeout(`${WORKER}/signal-audit`, 30000);
-      // The call above is wrong for POST; we need POST with body.
-      // So do the correct call:
-      const res2 = await fetch(`${WORKER}/signal-audit`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+      const res = await fetchWithTimeout(
+        `${API}/signal-audit`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        },
+        30000
+      );
 
-      const text = await res2.text();
+      const text = await res.text().catch(() => "");
       runBtn.disabled = false;
 
-      if (!res2.ok) {
-        setStatus(text || `Tool failed (${res2.status}).`);
+      if (!res.ok) {
+        setStatus(text || `Tool failed (${res.status}).`);
         return;
       }
 
       const data = JSON.parse(text);
       outWrap.style.display = "block";
-      out.textContent = data.report;
-      setStatus("Done.");
+      out.textContent = data.report || "No report returned.";
+      setStatus("Audit complete.");
     } catch (err) {
       runBtn.disabled = false;
-      setStatus("Tool call failed (network/CORS). Hard refresh and try again.");
-      console.log("Tool error:", err);
+      if (String(err).includes("AbortError")) {
+        setStatus("Tool timed out. Try again.");
+      } else {
+        setStatus("Tool call failed (network/CORS). Try desktop or after HTTPS is fully enabled.");
+      }
     }
   }
 
-  connectBtn.addEventListener("click", connect);
-  checkBtn.addEventListener("click", checkHolder);
-  runBtn.addEventListener("click", runAudit);
-
-  // Start state
+  // Wire buttons
   checkBtn.disabled = true;
-})();
+  tool.style.display = "none";
+  outWrap.style.display = "none";
 
+  connectBtn.addEventListener("click", connectWallet);
+  checkBtn.addEventListener("click", verifyHolderAccess);
+  runBtn.addEventListener("click", runAudit);
+})();
