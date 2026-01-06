@@ -1,5 +1,6 @@
 (() => {
   const statusEl = document.getElementById("status");
+  const statusLinkEl = document.getElementById("statusLink");
   const connectBtn = document.getElementById("connect");
   const checkBtn = document.getElementById("check");
   const tool = document.getElementById("tool");
@@ -16,7 +17,7 @@
 
   let address = null;
 
-  const setStatus = (t) => (statusEl.textContent = t || "");
+  const setStatus = (t) => {   statusEl.textContent = t || "";   if (statusLinkEl) statusLinkEl.innerHTML = ""; };
 
   function requireWorker() {
     if (!WORKER || WORKER.includes("YOURNAME")) {
@@ -85,9 +86,18 @@
         setStatus("Holder confirmed. Tool unlocked.");
         tool.style.display = "block";
       } else {
-        setStatus("Access requires at least 1 Byteson. View collection on OpenSea:https://opensea.io/collection/bytesons");
-        tool.style.display = "none";
-      }
+        setStatus("Access requires at least 1 Byteson.");
+tool.style.display = "none";
+
+if (statusLinkEl) {
+  const a = document.createElement("a");
+  a.href = "https://opensea.io/collection/bytesons";
+  a.target = "_blank";
+  a.rel = "noopener noreferrer";
+  a.textContent = "View the collection on OpenSea";
+  statusLinkEl.appendChild(a);
+}
+
     } catch (err) {
       // This is what we NEED to see instead of “stuck”
       if (String(err).includes("AbortError")) {
