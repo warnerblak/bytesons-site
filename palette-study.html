@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Palette Study — Bytesons</title>
+  <meta name="description" content="Palette Study: an interactive exploration of color within the Bytesons visual system." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Bytesons — Palette Study" />
+  <meta property="og:description" content="An interactive exploration of color within the Bytesons visual system." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://bytesons.xyz/palette-study.html" />
+  <meta property="og:image" content="https://bytesons.xyz/assets/img/og-manifesto.png" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Bytesons — Palette Study" />
+  <meta name="twitter:description" content="An interactive exploration of color within the Bytesons visual system." />
+  <meta name="twitter:image" content="https://bytesons.xyz/assets/img/og-manifesto.png" />
+
+  <link rel="icon" href="/assets/img/favicon.png" />
+  <link rel="stylesheet" href="styles.css" />
+
+  <style>
+    /* Minimal, page-local styling to match your existing cadence */
+    .study-card{
+      margin-top: 12px;
+      border: 1px solid rgba(242,242,242,.18);
+      border-radius: 16px;
+      padding: 16px;
+      background: rgba(0,0,0,.22);
+    }
+    .study-canvas{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .study-img{
+      width: min(460px, 100%);
+      border-radius: 14px;
+      display:block;
+      border: 1px solid rgba(242,242,242,.14);
+    }
+    .study-meta{
+      width:100%;
+      display:flex;
+      justify-content:space-between;
+      gap: 12px;
+      flex-wrap:wrap;
+      opacity:.85;
+      line-height:1.7;
+    }
+    .swatches{
+      display:flex;
+      gap: 10px;
+      flex-wrap:wrap;
+      margin-top: 12px;
+      align-items:center;
+    }
+    .swatch{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      border: 1px solid rgba(242,242,242,.18);
+      background: rgba(0,0,0,.25);
+      color: rgba(242,242,242,.88);
+      padding: 10px 12px;
+      border-radius: 999px;
+      cursor:pointer;
+      user-select:none;
+    }
+    .swatch:focus{
+      outline: 2px solid rgba(242,242,242,.35);
+      outline-offset: 2px;
+    }
+    .dot{
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(242,242,242,.25);
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.35);
+    }
+    .swatch.active{
+      border-color: rgba(242,242,242,.35);
+      background: rgba(242,242,242,.06);
+    }
+    .hint{
+      margin-top: 10px;
+      opacity:.7;
+      line-height:1.85;
+    }
+
+    /* Palette filters (intentionally restrained) */
+    /* NOTE: these are subtle by design; we can tune intensity later if you want. */
+    .p-original { filter: none; }
+
+    .p-mono     { filter: grayscale(1) contrast(1.05); }
+    .p-gray     { filter: grayscale(1) brightness(1.02) contrast(0.95); }
+
+    /* Muted terminal green */
+    .p-terminal { filter: hue-rotate(85deg) saturate(0.75) brightness(0.98) contrast(1.02); }
+
+    /* Bone: warm, slightly desaturated */
+    .p-bone     { filter: sepia(0.22) saturate(0.85) brightness(1.05) contrast(0.98); }
+
+    /* Dusk: subtle purple tone */
+    .p-dusk     { filter: hue-rotate(255deg) saturate(0.8) brightness(1.0) contrast(1.0); }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+    <nav class="nav" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="collection.html">Collection</a>
+      <a href="utility-lore.html">Utility &amp; Lore</a>
+      <a href="signal-audit.html">Signal Audit</a>
+      <a class="active" href="palette-study.html">Palette Study</a>
+      <a href="manifesto.html">Manifesto</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+
+    <!-- HERO -->
+    <header class="section">
+      <h1>Palette Study</h1>
+
+      <p class="sub">
+        An interactive exploration of color within the Bytesons visual system.
+      </p>
+
+      <p class="small" style="opacity:.9; line-height:1.85;">
+        This study does not modify real Bytesons.
+        All on-chain artifacts are fixed on Ethereum.
+      </p>
+    </header>
+
+    <!-- HOW TO USE -->
+    <section class="section">
+      <div class="kicker">How to use this page</div>
+
+      <ul class="small" style="line-height:1.9; opacity:.85; margin-top:12px;">
+        <li><strong>Choose a palette</strong> to shift tone without changing structure.</li>
+        <li><strong>Observe</strong> how perception changes while the artifact stays constant.</li>
+        <li><strong>Browse</strong> the live collection if you want a real on-chain artifact.</li>
+      </ul>
+
+      <div style="margin-top:14px;">
+        <a class="btn" href="https://opensea.io/collection/bytesons" target="_blank" rel="noopener noreferrer">
+          Browse Bytesons on OpenSea →
+        </a>
+      </div>
+    </section>
+
+    <!-- STUDY -->
+    <section class="section">
+      <div class="kicker">Study</div>
+
+      <div class="study-card">
+        <div class="study-meta small">
+          <div><strong>Base artifact</strong>: byteson-palette.png</div>
+          <div><strong>Active palette</strong>: <span id="activeName">Original</span></div>
+        </div>
+
+        <div class="study-canvas">
+          <img
+            id="artifact"
+            class="study-img p-original"
+            src="/assets/img/byteson-palette.png"
+            alt="Bytesons palette study base artifact"
+          />
+        </div>
+
+        <div class="swatches" role="group" aria-label="Palette controls">
+          <button class="swatch active" data-p="original" type="button">
+            <span class="dot" style="background: linear-gradient(135deg,#222,#aaa);"></span>
+            Original
+          </button>
+          <button class="swatch" data-p="mono" type="button">
+            <span class="dot" style="background:#cfcfcf;"></span>
+            Monochrome
+          </button>
+          <button class="swatch" data-p="gray" type="button">
+            <span class="dot" style="background:#8b8b8b;"></span>
+            Grayscale
+          </button>
+          <button class="swatch" data-p="terminal" type="button">
+            <span class="dot" style="background:#2f6b4e;"></span>
+            Terminal
+          </button>
+          <button class="swatch" data-p="bone" type="button">
+            <span class="dot" style="background:#d8cfb8;"></span>
+            Bone
+          </button>
+          <button class="swatch" data-p="dusk" type="button">
+            <span class="dot" style="background:#5e4a86;"></span>
+            Dusk
+          </button>
+        </div>
+
+        <p class="small hint">
+          Note: the palettes are intentionally restrained. This is a study of signal, not a customization tool.
+        </p>
+      </div>
+    </section>
+
+    <!-- NOTES / MECHANISM -->
+    <section class="section">
+      <div class="kicker">Notes</div>
+
+      <p class="small" style="opacity:.85; line-height:1.85;">
+        Time in Bytesons is expressed through immutability: core traits and metadata are fixed on Ethereum and do not change.
+      </p>
+
+      <p class="small" style="opacity:.75; line-height:1.85; margin-top:10px;">
+        This page is a visual reference only. It does not represent trait rarity or modify on-chain data.
+      </p>
+    </section>
+
+    <!-- REFERENCE -->
+    <section class="section">
+      <div class="kicker">Reference</div>
+
+      <div class="small" style="opacity:.8; line-height:1.9; margin-top:10px;">
+        <a href="https://etherscan.io/address/0xb3b434f79f69b685c063860799bdc44dac7ef25e" target="_blank" rel="noopener noreferrer">Contract</a><br/>
+        <a href="collection.html">Index</a><br/>
+        <a href="https://opensea.io/collection/bytesons" target="_blank" rel="noopener noreferrer">Archive</a>
+      </div>
+    </section>
+  </main>
+
+  <script src="palette-study.js"></script>
+</body>
+</html>
