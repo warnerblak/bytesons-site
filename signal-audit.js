@@ -119,53 +119,87 @@
   }
 
   async function runAudit() {
-    if (!requireApi()) return;
-    if (!address) return setStatus("Connect wallet first.");
+  if (!requireWorker()) return;
+  if (!address) return setStatus("Connect wallet first.");
 
-    const payload = {
-      address,
-      projectName: projectName.value.trim(),
-      projectLink: projectLink.value.trim(),
-      projectCopy: projectCopy.value.trim(),
-    };
+  const PREVIEW_KEY = "bytesons_signal_audit_preview_used";
 
-    if (!payload.projectCopy) return setStatus("Paste the text you want audited first.");
-
-    setStatus("Reviewing signal…");
-    runBtn.disabled = true;
-
-    try {
-      const res = await fetchWithTimeout(
-        `${API}/signal-audit`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        },
-        30000
-      );
-
-      const text = await res.text().catch(() => "");
-      runBtn.disabled = false;
-
-      if (!res.ok) {
-        setStatus(text || `Tool failed (${res.status}).`);
-        return;
-      }
-
-      const data = JSON.parse(text);
-      outWrap.style.display = "block";
-      out.textContent = data.report || "No report returned.";
-      setStatus("Audit complete.");
-    } catch (err) {
-      runBtn.disabled = false;
-      if (String(err).includes("AbortError")) {
-        setStatus("Tool timed out. Try again.");
-      } else {
-        setStatus("Tool call failed (network/CORS). Try desktop or after HTTPS is fully enabled.");
-      }
+  // If they already used preview and they are not a holder, stop early.
+  // We don't know holder status here, so we’ll enforce after response too.
+  if (localStorage.getItem(PREVIEW_KEY)) {
+    setStatus("Free preview already used. Full access requires a Byteson.");
+    if (statusLinkEl) {
+      const a = document.createElement("a");
+      a.href = "https://opensea.io/collection/bytesons";
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      a.textContent = "View the collection on OpenSea →";
+      statusLinkEl.appendChild(a);
     }
+    return;
   }
+
+  const payload = {
+    address,
+    projectName: projectName.value.trim(),
+    projectLink: projectLink.value.trim(),
+    projectCopy: projectCopy.value.trim(),
+  };
+
+  if (!payload.projectCopy) return setStatus("Paste your project copy first.");
+
+  setStatus("Reviewing signal…");
+  runBtn.disabled = true;
+
+  try {
+    const res = await fetch(`${WORKER}/signal-audit`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    const text = await res.text();
+    runBtn.disabled = false;
+
+    if (!res.ok) {
+      setStatus(text || `Tool failed (${res.status}).`);
+      return;
+    }
+
+    const data = JSON.parse(text);
+
+    outWrap.style.display = "block";
+    out.style.filter = "";
+    out.style.pointerEvents = "";
+    out.textContent = data.report || "(No report.)";
+
+    // Preview logic
+    if (data.preview) {
+      localStorage.setItem(PREVIEW_KEY, "true");
+
+      // Blur the output + show CTA
+      out.style.filter = "blur(4px)";
+      out.style.pointerEvents = "none";
+
+      setStatus("Preview shown. Full access requires at least 1 Byteson.");
+
+      if (statusLinkEl) {
+        const a = document.createElement("a");
+        a.href = "https://opensea.io/collection/bytesons";
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+        a.textContent = "Unlock full access on OpenSea →";
+        statusLinkEl.appendChild(a);
+      }
+    } else {
+      setStatus("Audit complete.");
+    }
+  } catch (err) {
+    runBtn.disabled = false;
+    setStatus("Tool call failed (network). Try again after HTTPS is enabled.");
+    console.log(err);
+  }
+}
 
   // Wire buttons
   checkBtn.disabled = true;
