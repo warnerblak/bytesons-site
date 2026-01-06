@@ -6,139 +6,138 @@
   <title>Signal Audit — Bytesons</title>
   <meta name="description" content="Signal Audit: a holder-only review of language, structure, and intent." />
 
-  <!-- If you already have a shared stylesheet, keep it and remove/adjust this link -->
   <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
-  <!-- NAV -->
-  <nav class="nav" aria-label="Primary">
-    <a href="index.html">Home</a>
-    <a href="collection.html">Collection</a>
-    <a href="utility-lore.html">Utility &amp; Lore</a>
-    <a class="active" href="signal-audit.html">Signal Audit</a>
-    <a href="manifesto.html">Manifesto</a>
-    <a href="contact.html">Contact</a>
-  </nav>
-
   <main>
-  <div class="container">
+    <!-- ONE CENTERED WRAPPER FOR EVERYTHING -->
+    <div class="container">
 
-    <!-- TOOLS INDEX -->
-    <section class="section">
-      <div class="kicker">Tools</div>
+      <!-- NAV -->
+      <nav class="nav" aria-label="Primary">
+        <a href="index.html">Home</a>
+        <a href="collection.html">Collection</a>
+        <a href="utility-lore.html">Utility &amp; Lore</a>
+        <a class="active" href="signal-audit.html">Signal Audit</a>
+        <a href="manifesto.html">Manifesto</a>
+        <a href="contact.html">Contact</a>
+      </nav>
 
-      <p class="sub">
-        A small set of holder-only instruments designed to clarify language,
-        structure, and intent.
-      </p>
+      <!-- TOOLS INDEX -->
+      <section class="section">
+        <div class="kicker">Tools</div>
 
-      <ul class="small" style="line-height:1.9; opacity:.8; margin-top:12px;">
-        <li>
-          <strong>Signal Audit</strong> — A structured review of how a project reads
-          to an external observer.
-        </li>
-      </ul>
-    </section>
+        <p class="sub">
+          A small set of holder-only instruments designed to clarify language,
+          structure, and intent.
+        </p>
 
-    <!-- HEADER -->
-    <header class="section">
-      <h1>Signal Audit</h1>
+        <ul class="small" style="line-height:1.9; opacity:.8; margin-top:12px;">
+          <li>
+            <strong>Signal Audit</strong> — A structured review of how a project reads
+            to an external observer.
+          </li>
+        </ul>
+      </section>
 
-      <p class="sub">
-        A holder-only review of language, structure, and intent.
-      </p>
+      <!-- HEADER -->
+      <header class="section">
+        <h1>Signal Audit</h1>
 
-      <p class="small">
-        This tool evaluates <strong>signal</strong> — not hype, not price, not outcomes.
-        It reflects how your project reads to someone encountering it for the first time.
-      </p>
+        <p class="sub">
+          A holder-only review of language, structure, and intent.
+        </p>
 
-      <!-- Instructional copy (restrained, spun from your text) -->
-      <div class="small" style="margin-top:16px; line-height:1.85; opacity:.85;">
-        This tool evaluates <strong>signal</strong> — not hype, not price, not outcomes.<br/>
-        It reflects how your project reads to someone encountering it for the first time.<br/><br/>
-        Please connect an Ethereum wallet to verify your Byteson NFT holdings.<br/>
-        <span style="opacity:.75;">
-          We hope this brings you the value we intended when building it.
-        </span>
-      </div>
+        <p class="small">
+          This tool evaluates <strong>signal</strong> — not hype, not price, not outcomes.
+          It reflects how your project reads to someone encountering it for the first time.
+        </p>
 
-      <!-- Status -->
-      <p id="status" class="small" style="margin-top:14px;"></p>
-      <p id="statusLink" class="small" style="margin-top:8px;"></p>
+        <div class="small" style="margin-top:16px; line-height:1.85; opacity:.85;">
+          This tool evaluates <strong>signal</strong> — not hype, not price, not outcomes.<br/>
+          It reflects how your project reads to someone encountering it for the first time.<br/><br/>
+          Please connect an Ethereum wallet to verify your Byteson NFT holdings.<br/>
+          <span style="opacity:.75;">
+            We hope this brings you the value we intended when building it.
+          </span>
+        </div>
 
-      <!-- Actions -->
-      <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:18px;">
-        <button id="connect" class="btn">Connect Wallet</button>
-        <button id="check" class="btn btn-ghost" disabled>Verify Holder Access</button>
-        <button id="disconnect" class="btn btn-ghost" style="display:none;">Disconnect</button>
-      </div>
-    </header>
+        <!-- Status -->
+        <p id="status" class="small" style="margin-top:14px;"></p>
+        <p id="statusLink" class="small" style="margin-top:8px;"></p>
 
-    <!-- TOOL UI (hidden until access confirmed) -->
-    <section class="section lg" id="tool" style="display:none;">
-      <div class="kicker">Audit Input</div>
+        <!-- Actions (will now align with centered container) -->
+        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:18px;">
+          <button id="connect" class="btn">Connect Wallet</button>
+          <button id="check" class="btn btn-ghost" disabled>Verify Holder Access</button>
+          <button id="disconnect" class="btn btn-ghost" style="display:none;">Disconnect</button>
+        </div>
+      </header>
 
-      <p class="small">
-        Paste the text you want reviewed. This can include a bio, homepage copy,
-        or a short project description.
-      </p>
+      <!-- TOOL -->
+      <section class="section lg" id="tool" style="display:none;">
+        <div class="kicker">Audit Input</div>
 
-      <div class="small" style="opacity:.75; line-height:1.8; margin-top:10px;">
-        If you’re combining multiple pieces, label them clearly
-        (e.g. <em>BIO:</em>, <em>HOMEPAGE:</em>, <em>DESCRIPTION:</em>).
-      </div>
+        <p class="small">
+          Paste the text you want reviewed. This can include a bio, homepage copy,
+          or a short project description.
+        </p>
 
-      <label class="small" style="margin-top:16px;">Project name (optional)</label>
-      <input id="projectName" class="input" placeholder="e.g., WCNetizens" />
+        <div class="small" style="opacity:.75; line-height:1.8; margin-top:10px;">
+          If you’re combining multiple pieces, label them clearly
+          (e.g. <em>BIO:</em>, <em>HOMEPAGE:</em>, <em>DESCRIPTION:</em>).
+        </div>
 
-      <label class="small" style="margin-top:14px;">Primary link (optional)</label>
-      <input id="projectLink" class="input" placeholder="https://…" />
+        <label class="small" style="margin-top:16px;">Project name (optional)</label>
+        <input id="projectName" class="input" placeholder="e.g., WCNetizens" />
 
-      <label class="small" style="margin-top:14px;">
-        Text to audit <span style="opacity:.6;">(required)</span>
-      </label>
-      <textarea
-        id="projectCopy"
-        class="textarea"
-        rows="12"
-        placeholder="Paste your bio, homepage copy, or project description here."
-      ></textarea>
+        <label class="small" style="margin-top:14px;">Primary link (optional)</label>
+        <input id="projectLink" class="input" placeholder="https://…" />
 
-      <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:18px;">
-        <button id="run" class="btn">Generate Signal Audit</button>
-      </div>
-    </section>
+        <label class="small" style="margin-top:14px;">
+          Text to audit <span style="opacity:.6;">(required)</span>
+        </label>
+        <textarea
+          id="projectCopy"
+          class="textarea"
+          rows="12"
+          placeholder="Paste your bio, homepage copy, or project description here."
+        ></textarea>
 
-    <!-- OUTPUT -->
-    <section class="section lg" id="outWrap" style="display:none;">
-      <div class="kicker">Audit Report</div>
+        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:18px;">
+          <button id="run" class="btn">Generate Signal Audit</button>
+        </div>
+      </section>
 
-      <p class="small" style="margin-bottom:12px;">
-        Read this as an external perspective. You don’t need to agree with every point —
-        the goal is awareness, not compliance.
-      </p>
+      <!-- OUTPUT -->
+      <section class="section lg" id="outWrap" style="display:none;">
+        <div class="kicker">Audit Report</div>
 
-      <pre
-        id="out"
-        style="
-          white-space: pre-wrap;
-          font-size: 16px;
-          line-height: 1.7;
-          color: rgba(242,242,242,.9);
-        "
-      ></pre>
-    </section>
+        <p class="small" style="margin-bottom:12px;">
+          Read this as an external perspective. You don’t need to agree with every point —
+          the goal is awareness, not compliance.
+        </p>
+
+        <pre
+          id="out"
+          style="
+            white-space: pre-wrap;
+            font-size: 16px;
+            line-height: 1.7;
+            color: rgba(242,242,242,.9);
+          "
+        ></pre>
+      </section>
+
+      <!-- Worker URL -->
+      <script>
+        window.WORKER_URL = "https://bytesons-gate.warnerblak.workers.dev";
+      </script>
+      <script src="signal-audit.js"></script>
+
     </div>
-</main>
-
-
-  <!-- Worker URL: REPLACE THIS -->
-  <script>
-    window.WORKER_URL = "https://bytesons-gate.warnerblak.workers.dev";
-  </script>
-
-  <script src="signal-audit.js"></script>
+  </main>
 </body>
 </html>
+
