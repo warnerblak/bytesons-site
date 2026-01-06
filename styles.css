@@ -174,3 +174,29 @@ p{ margin: 0 0 22px; font-size: 18px; }
   margin-top: 10px;
   opacity: .7;
 }
+.btn{
+  background: rgba(242,242,242,.10);
+  color: var(--fg);
+  border: 1px solid rgba(242,242,242,.18);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 14px;
+  letter-spacing: .02em;
+  cursor: pointer;
+}
+.btn:hover{ border-color: rgba(242,242,242,.35); }
+.btn:disabled{ opacity:.5; cursor:not-allowed; }
+.btn-ghost{ background: transparent; }
+
+.input, .textarea{
+  width: 100%;
+  margin-top: 8px;
+  background: rgba(242,242,242,.04);
+  color: var(--fg);
+  border: 1px solid rgba(242,242,242,.14);
+  border-radius: 12px;
+  padding: 12px 12px;
+  font-size: 16px;
+  outline: none;
+}
