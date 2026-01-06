@@ -7,6 +7,11 @@
   const hueSlider = document.getElementById("hueSlider");
   const hueVal = document.getElementById("hueVal");
 
+  const copyBtn = document.getElementById("copyLink");
+  const copyStatus = document.getElementById("copyStatus");
+
+  const validPalettes = new Set(["original", "terminal", "bone", "dusk", "pastels"]);
+
   const nameMap = {
     original: "Original",
     terminal: "Terminal",
@@ -15,59 +20,112 @@
     pastels: "Pastels",
   };
 
-  function setHue(deg) {
-    if (!stage) return;
-    stage.style.setProperty("--shift", `${deg}deg`);
-    if (hueVal) hueVal.textContent = `${deg}°`;
+  let currentPalette = "original";
+  let currentHue = hueSlider ? (parseInt(hueSlider.value, 10) || 0) : 0;
+
+  function clampHue(n) {
+    // Keep consistent with your slider bounds
+    if (n > 30) return 30;
+    if (n < -30) return -30;
+    return n;
   }
 
-  function setPalette(key) {
-    if (!img) return;
+  function setHue(deg, { syncSlider = true, updateUrl = true } = {}) {
+    currentHue = clampHue(parseInt(deg, 10) || 0);
 
-    // Clear existing palette classes
-    img.classList.remove(
-      "p-original",
-      "p-terminal",
-      "p-bone",
-      "p-dusk",
-      "p-pastels"
-    );
+    if (stage) stage.style.setProperty("--shift", `${currentHue}deg`);
+    if (hueVal) hueVal.textContent = `${currentHue}°`;
+    if (syncSlider && hueSlider) hueSlider.value = String(currentHue);
 
-    img.classList.add(`p-${key}`);
+    if (updateUrl) writeStateToUrl();
+  }
 
-    // Update active label
-    if (activeName) activeName.textContent = nameMap[key] || "Original";
+  function setPalette(key, { updateUrl = true } = {}) {
+    if (!validPalettes.has(key)) key = "original";
+    currentPalette = key;
 
-    // Toggle active state on buttons
+    if (img) {
+      img.classList.remove("p-original", "p-terminal", "p-bone", "p-dusk", "p-pastels");
+      img.classList.add(`p-${currentPalette}`);
+    }
+
+    if (activeName) activeName.textContent = nameMap[currentPalette] || "Original";
+
     swatches.forEach((b) => {
-      const isActive = b.getAttribute("data-p") === key;
+      const isActive = b.getAttribute("data-p") === currentPalette;
       b.classList.toggle("active", isActive);
       b.setAttribute("aria-pressed", isActive ? "true" : "false");
     });
 
-    // IMPORTANT: do NOT reset hue when switching palettes
-    // (user keeps their chosen hue offset)
+    if (updateUrl) writeStateToUrl();
   }
 
-  // Palette button clicks
+  function writeStateToUrl() {
+    const url = new URL(window.location.href);
+    url.searchParams.set("p", currentPalette);
+    url.searchParams.set("h", String(currentHue));
+
+    // Don’t create history spam; keep it quiet
+    window.history.replaceState({}, "", url.toString());
+  }
+
+  function readStateFromUrl() {
+    const url = new URL(window.location.href);
+    const p = (url.searchParams.get("p") || "original").toLowerCase();
+    const hRaw = url.searchParams.get("h");
+    const h = clampHue(parseInt(hRaw, 10) || 0);
+
+    return {
+      palette: validPalettes.has(p) ? p : "original",
+      hue: h,
+    };
+  }
+
+  async function copyShareLink() {
+    if (!copyBtn) return;
+
+    const url = new URL(window.location.href);
+    url.searchParams.set("p", currentPalette);
+    url.searchParams.set("h", String(currentHue));
+
+    const shareUrl = url.toString();
+
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      if (copyStatus) copyStatus.textContent = "Copied.";
+      setTimeout(() => {
+        if (copyStatus) copyStatus.textContent = "";
+      }, 1600);
+    } catch (e) {
+      // Fallback: select via prompt (still works everywhere)
+      window.prompt("Copy this link:", shareUrl);
+    }
+  }
+
+  // Wire swatches
   swatches.forEach((btn) => {
     btn.addEventListener("click", () => {
-      const key = btn.getAttribute("data-p");
-      if (!key) return;
-      setPalette(key);
+      const key = (btn.getAttribute("data-p") || "original").toLowerCase();
+      setPalette(key, { updateUrl: true });
     });
   });
 
-  // Hue slider changes
+  // Wire hue slider
   if (hueSlider) {
     hueSlider.addEventListener("input", () => {
       const deg = parseInt(hueSlider.value, 10) || 0;
-      setHue(deg);
+      setHue(deg, { syncSlider: true, updateUrl: true });
     });
   }
 
-  // Initialize
-  setPalette("original");
-  const initial = hueSlider ? parseInt(hueSlider.value, 10) || 0 : 0;
-  setHue(initial);
+  // Wire copy button
+  if (copyBtn) {
+    copyBtn.addEventListener("click", copyShareLink);
+  }
+
+  // Init from URL
+  const initial = readStateFromUrl();
+  setPalette(initial.palette, { updateUrl: false });
+  setHue(initial.hue, { syncSlider: true, updateUrl: false });
+  writeStateToUrl();
 })();
