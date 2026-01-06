@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Signal Audit — Holder Tool</title>
+  <meta name="description" content="Holder-gated cultural audit / project review." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="wrap">
+    <nav class="nav" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="collection.html">Collection</a>
+      <a href="utility-lore.html">Utility &amp; Lore</a>
+      <a href="manifesto.html">Manifesto</a>
+      <a href="contact.html">Contact</a>
+      <a class="active" href="signal-audit.html">Signal Audit</a>
+    </nav>
+
+    <header class="section">
+      <h1>Signal Audit</h1>
+      <p class="sub">Holder tool. Connect wallet to unlock.</p>
+
+      <p id="status" class="small"></p>
+
+      <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:14px;">
+        <button id="connect" class="btn">Connect Wallet</button>
+        <button id="check" class="btn btn-ghost" disabled>Check Holder Status</button>
+      </div>
+    </header>
+
+    <section class="section lg" id="tool" style="display:none;">
+      <div class="kicker">Run Audit</div>
+
+      <label class="small">Project name (optional)</label>
+      <input id="projectName" class="input" placeholder="e.g., WCNetizens" />
+
+      <label class="small" style="margin-top:14px;">Primary link (optional)</label>
+      <input id="projectLink" class="input" placeholder="https://..." />
+
+      <label class="small" style="margin-top:14px;">Paste your copy (required)</label>
+      <textarea id="projectCopy" class="textarea" rows="12" placeholder="Paste: bio + homepage copy + description…"></textarea>
+
+      <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:14px;">
+        <button id="run" class="btn">Generate Signal Audit</button>
+      </div>
+
+      <div class="section" id="outWrap" style="display:none;">
+        <div class="kicker">Report</div>
+        <pre id="out" style="white-space:pre-wrap; font-size:16px; line-height:1.65; color:rgba(242,242,242,.9);"></pre>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span class="small">bytesons.xyz</span>
+    </footer>
+  </main>
+
+  <script>
+    // PUT YOUR WORKER URL HERE:
+    window.WORKER_URL = "https://bytesons-gate.YOURNAME.workers.dev";
+  </script>
+  <script src="signal-audit.js"></script>
+</body>
+</html>
