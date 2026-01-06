@@ -29,11 +29,32 @@
   }
 
   function requireWorker() {
-    if (!WORKER || WORKER.includes("YOURNAME")) {
+    if (!WORKER || WORKER.includes("YOUR-WORKER-URL")) {
       setStatus("Set your Worker URL in signal-audit.html (window.WORKER_URL).");
       return false;
     }
     return true;
+  }
+
+  function resetUI() {
+    const checkBtn = $("check");
+    const disconnectBtn = $("disconnect");
+    const tool = $("tool");
+    const outWrap = $("outWrap");
+    const out = $("out");
+    const previewMask = document.getElementById("previewMask");
+
+    if (checkBtn) checkBtn.disabled = true;
+    if (disconnectBtn) disconnectBtn.style.display = "none";
+    if (tool) tool.style.display = "none";
+
+    if (outWrap) outWrap.style.display = "none";
+    if (out) {
+      out.textContent = "";
+      out.style.filter = "";
+      out.style.pointerEvents = "";
+    }
+    if (previewMask) previewMask.remove();
   }
 
   async function connect() {
@@ -52,13 +73,20 @@
       if (!address) return setStatus("No wallet address returned.");
 
       setStatus(`Wallet connected: ${address.slice(0, 6)}…${address.slice(-4)}`);
+
       const checkBtn = $("check");
+      const disconnectBtn = $("disconnect");
       if (checkBtn) checkBtn.disabled = false;
+      if (disconnectBtn) disconnectBtn.style.display = "inline-flex";
     } catch {
       setStatus("Wallet connection cancelled.");
     }
-      const disconnectBtn = $("disconnect");
-      if (disconnectBtn) disconnectBtn.style.display = "inline-flex";
+  }
+
+  function disconnect() {
+    address = null;
+    setStatus("Disconnected.");
+    resetUI();
   }
 
   async function checkHolder() {
@@ -86,7 +114,7 @@
         setStatusLink("View the collection on OpenSea →", "https://opensea.io/collection/bytesons");
       }
     } catch {
-      // This is expected while site is still Not Secure / HTTP
+      // Expected while site is still HTTP/Not Secure
       setStatus("Holder check blocked (network/CORS). This typically resolves once HTTPS is enabled.");
     }
   }
@@ -151,12 +179,7 @@
 
     if (!projectCopy) return setStatus("Paste your bio / description first.");
 
-    const payload = {
-      address,
-      projectName,
-      projectLink,
-      projectCopy,
-    };
+    const payload = { address, projectName, projectLink, projectCopy };
 
     const runBtn = $("run");
     if (runBtn) runBtn.disabled = true;
@@ -192,48 +215,20 @@
 
       if (data.preview) {
         localStorage.setItem(PREVIEW_KEY, "true");
-        setStatus("Preview shown. Full access requires at least 1 Byteson.");
+        setStatus("Preview shown. Full access requires a Byteson.");
         setStatusLink("Unlock full access on OpenSea →", "https://opensea.io/collection/bytesons");
         applyPreviewMask();
       } else {
         setStatus("Audit complete.");
       }
     } catch (e) {
-      if (runBtn) runBtn.disabled = false;
+      const runBtn2 = $("run");
+      if (runBtn2) runBtn2.disabled = false;
       setStatus("Tool call failed (network). This improves once HTTPS is enabled.");
       console.log("Network error:", e);
     }
   }
-function resetUI() {
-  const checkBtn = $("check");
-  const disconnectBtn = $("disconnect");
-  const tool = $("tool");
-  const outWrap = $("outWrap");
-  const out = $("out");
-  const previewMask = document.getElementById("previewMask");
 
-  if (checkBtn) checkBtn.disabled = true;
-  if (disconnectBtn) disconnectBtn.style.display = "none";
-  if (tool) tool.style.display = "none";
-
-  if (outWrap) outWrap.style.display = "none";
-  if (out) {
-    out.textContent = "";
-    out.style.filter = "";
-    out.style.pointerEvents = "";
-  }
-  if (previewMask) previewMask.remove();
-}
-
-function disconnect() {
-  // Clear app session
-  address = null;
-  setStatus("Disconnected.");
-  resetUI();
-
-}
-
-  
   // Bind events after DOM loads
   window.addEventListener("DOMContentLoaded", () => {
     const connectBtn = $("connect");
@@ -249,4 +244,5 @@ function disconnect() {
     if (checkBtn) checkBtn.disabled = true;
   });
 })();
+
 
