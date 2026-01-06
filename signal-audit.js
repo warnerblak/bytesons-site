@@ -85,7 +85,7 @@
         setStatus("Holder confirmed. Tool unlocked.");
         tool.style.display = "block";
       } else {
-        setStatus("Not a holder. Acquire a Byteson to unlock.");
+        setStatus("Access requires at least 1 Byteson. View collection on OpenSea:https://opensea.io/collection/bytesons");
         tool.style.display = "none";
       }
     } catch (err) {
