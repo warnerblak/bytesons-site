@@ -1,212 +1,217 @@
 (() => {
-  const statusEl = document.getElementById("status");
-  const statusLinkEl = document.getElementById("statusLink");
+  // Wait until DOM is ready so elements exist before we bind handlers
+  window.addEventListener("DOMContentLoaded", () => {
+    const statusEl = document.getElementById("status");
+    const statusLinkEl = document.getElementById("statusLink");
 
-  const connectBtn = document.getElementById("connect");
-  const checkBtn = document.getElementById("check");
+    const connectBtn = document.getElementById("connect");
+    const checkBtn = document.getElementById("check");
+    const runBtn = document.getElementById("run");
 
-  const tool = document.getElementById("tool");
-  const runBtn = document.getElementById("run");
+    const tool = document.getElementById("tool");
+    const outWrap = document.getElementById("outWrap");
+    const out = document.getElementById("out");
 
-  const outWrap = document.getElementById("outWrap");
-  const out = document.getElementById("out");
+    const projectName = document.getElementById("projectName");
+    const projectLink = document.getElementById("projectLink");
+    const projectCopy = document.getElementById("projectCopy");
 
-  const projectName = document.getElementById("projectName");
-  const projectLink = document.getElementById("projectLink");
-  const projectCopy = document.getElementById("projectCopy");
+    // Normalize Worker URL (remove trailing slashes)
+    const WORKER = (window.WORKER_URL || "").replace(/\/+$/, "");
+    const PREVIEW_KEY = "bytesons_signal_audit_preview_used";
 
-  // Normalize Worker URL (remove trailing slash if present)
-  const API = (window.WORKER_URL || "").replace(/\/+$/, "");
+    let address = null;
 
-  let address = null;
-
-  const setStatus = (text) => {
-    statusEl.textContent = text || "";
-    if (statusLinkEl) statusLinkEl.innerHTML = "";
-  };
-
-  const setLink = (href, label) => {
-    if (!statusLinkEl) return;
-    statusLinkEl.innerHTML = "";
-    const a = document.createElement("a");
-    a.href = href;
-    a.target = "_blank";
-    a.rel = "noopener noreferrer";
-    a.textContent = label;
-    statusLinkEl.appendChild(a);
-  };
-
-  const requireApi = () => {
-    if (!API || API.includes("YOURNAME")) {
-      setStatus("Set your Worker URL in signal-audit.html (window.WORKER_URL).");
-      return false;
-    }
-    return true;
-  };
-
-  async function fetchWithTimeout(url, options = {}, ms = 12000) {
-    const controller = new AbortController();
-    const id = setTimeout(() => controller.abort(), ms);
-    try {
-      const res = await fetch(url, { ...options, signal: controller.signal });
-      return res;
-    } finally {
-      clearTimeout(id);
-    }
-  }
-
-  async function connectWallet() {
-    if (!requireApi()) return;
-
-    if (!window.ethereum) {
-      setStatus("No wallet detected. Use a wallet extension (desktop) or a wallet browser.");
-      return;
+    function setStatus(text) {
+      if (statusEl) statusEl.textContent = text || "";
+      if (statusLinkEl) statusLinkEl.innerHTML = "";
     }
 
-    try {
-      setStatus("Connecting wallet…");
-      const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-      address = accounts?.[0] || null;
+    function setStatusLink(label, href) {
+      if (!statusLinkEl) return;
+      statusLinkEl.innerHTML = "";
+      const a = document.createElement("a");
+      a.href = href;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      a.textContent = label;
+      statusLinkEl.appendChild(a);
+    }
 
-      if (!address) {
-        setStatus("No wallet address returned.");
+    function requireWorker() {
+      if (!WORKER || WORKER.includes("YOURNAME")) {
+        setStatus("Set your Worker URL in signal-audit.html (window.WORKER_URL).");
+        return false;
+      }
+      return true;
+    }
+
+    async function connect() {
+      if (!requireWorker()) return;
+
+      if (!window.ethereum) {
+        setStatus("No wallet detected. Use a browser wallet extension (desktop) or a wallet browser.");
         return;
       }
 
-      setStatus(`Wallet connected: ${address.slice(0, 6)}…${address.slice(-4)}`);
-      checkBtn.disabled = false;
-    } catch {
-      setStatus("Wallet connection cancelled.");
+      try {
+        setStatus("Connecting wallet…");
+        const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+        address = accounts?.[0] || null;
+
+        if (!address) {
+          setStatus("No wallet address returned.");
+          return;
+        }
+
+        setStatus(`Wallet connected: ${address.slice(0, 6)}…${address.slice(-4)}`);
+        if (checkBtn) checkBtn.disabled = false;
+      } catch (e) {
+        setStatus("Wallet connection cancelled.");
+      }
     }
-  }
 
-  async function verifyHolderAccess() {
-    if (!requireApi()) return;
-    if (!address) return setStatus("Connect wallet first.");
+    async function checkHolder() {
+      if (!requireWorker()) return;
+      if (!address) return setStatus("Connect wallet first.");
 
-    setStatus("Verifying holder access…");
+      setStatus("Verifying holder access…");
 
-    try {
-      const url = `${API}/test-holder?address=${encodeURIComponent(address)}`;
-      const res = await fetchWithTimeout(url, {}, 12000);
+      try {
+        const res = await fetch(`${WORKER}/test-holder?address=${encodeURIComponent(address)}`);
+        if (!res.ok) {
+          const t = await res.text().catch(() => "");
+          setStatus(`Holder check failed (${res.status}). ${t || ""}`.trim());
+          return;
+        }
 
-      if (!res.ok) {
-        const txt = await res.text().catch(() => "");
-        setStatus(`Holder check failed (${res.status}). ${txt || "Try again."}`);
-        tool.style.display = "none";
-        return;
+        const data = await res.json();
+        if (data.isHolder) {
+          setStatus("Access confirmed.");
+          if (tool) tool.style.display = "block";
+        } else {
+          setStatus("Access requires at least 1 Byteson.");
+          if (tool) tool.style.display = "none";
+          setStatusLink("View the collection on OpenSea →", "https://opensea.io/collection/bytesons");
+        }
+      } catch (e) {
+        // This will happen while your site is still Not Secure / HTTP
+        setStatus("Holder check blocked (network/CORS). This typically resolves once HTTPS is enabled.");
       }
-
-      const data = await res.json();
-
-      if (data.isHolder) {
-        setStatus("Access confirmed.");
-        tool.style.display = "block";
-        return;
-      }
-
-      setStatus("Access requires at least 1 Byteson.");
-      setLink("https://opensea.io/collection/bytesons", "View the collection on OpenSea");
-      tool.style.display = "none";
-    } catch (err) {
-      if (String(err).includes("AbortError")) {
-        setStatus("Holder check timed out. Try again.");
-      } else {
-        setStatus("Holder check blocked (network/CORS). If you’re on mobile, try a desktop wallet extension.");
-      }
-      tool.style.display = "none";
     }
-  }
 
-  async function runAudit() {
-  if (!requireWorker()) return;
-  if (!address) return setStatus("Connect wallet first.");
+    function applyPreviewMask() {
+      if (!out || !outWrap) return;
 
-  const PREVIEW_KEY = "bytesons_signal_audit_preview_used";
+      out.style.filter = "blur(4px)";
+      out.style.pointerEvents = "none";
 
-  // If they already used preview and they are not a holder, stop early.
-  // We don't know holder status here, so we’ll enforce after response too.
-  if (localStorage.getItem(PREVIEW_KEY)) {
-    setStatus("Free preview already used. Full access requires a Byteson.");
-    if (statusLinkEl) {
+      // Prevent stacking multiple masks
+      const existing = document.getElementById("previewMask");
+      if (existing) existing.remove();
+
+      const mask = document.createElement("div");
+      mask.id = "previewMask";
+      mask.style.marginTop = "16px";
+      mask.style.padding = "12px";
+      mask.style.border = "1px solid rgba(242,242,242,.2)";
+      mask.style.borderRadius = "12px";
+      mask.style.background = "rgba(0,0,0,.4)";
+      mask.style.color = "rgba(242,242,242,.9)";
+      mask.style.lineHeight = "1.7";
+
+      const title = document.createElement("div");
+      title.innerHTML = "<strong>Preview limit reached.</strong>";
+      mask.appendChild(title);
+
+      const copy = document.createElement("div");
+      copy.style.marginTop = "6px";
+      copy.textContent = "Unlock the full Signal Audit by holding at least 1 Byteson.";
+      mask.appendChild(copy);
+
+      const linkWrap = document.createElement("div");
+      linkWrap.style.marginTop = "10px";
       const a = document.createElement("a");
       a.href = "https://opensea.io/collection/bytesons";
       a.target = "_blank";
       a.rel = "noopener noreferrer";
-      a.textContent = "View the collection on OpenSea →";
-      statusLinkEl.appendChild(a);
-    }
-    return;
-  }
+      a.textContent = "View collection on OpenSea →";
+      linkWrap.appendChild(a);
 
-  const payload = {
-    address,
-    projectName: projectName.value.trim(),
-    projectLink: projectLink.value.trim(),
-    projectCopy: projectCopy.value.trim(),
-  };
-
-  if (!payload.projectCopy) return setStatus("Paste your project copy first.");
-
-  setStatus("Reviewing signal…");
-  runBtn.disabled = true;
-
-  try {
-    const res = await fetch(`${WORKER}/signal-audit`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-
-    const text = await res.text();
-    runBtn.disabled = false;
-
-    if (!res.ok) {
-      setStatus(text || `Tool failed (${res.status}).`);
-      return;
+      mask.appendChild(linkWrap);
+      outWrap.appendChild(mask);
     }
 
-    const data = JSON.parse(text);
+    async function runAudit() {
+      if (!requireWorker()) return;
+      if (!address) return setStatus("Connect wallet first.");
 
-    outWrap.style.display = "block";
-    out.style.filter = "";
-    out.style.pointerEvents = "";
-    out.textContent = data.report || "(No report.)";
-
-    // Preview logic
-    if (data.preview) {
-      localStorage.setItem(PREVIEW_KEY, "true");
-
-      // Blur the output + show CTA
-      out.style.filter = "blur(4px)";
-      out.style.pointerEvents = "none";
-
-      setStatus("Preview shown. Full access requires at least 1 Byteson.");
-
-      if (statusLinkEl) {
-        const a = document.createElement("a");
-        a.href = "https://opensea.io/collection/bytesons";
-        a.target = "_blank";
-        a.rel = "noopener noreferrer";
-        a.textContent = "Unlock full access on OpenSea →";
-        statusLinkEl.appendChild(a);
+      // If they've already used the free preview, block early.
+      if (localStorage.getItem(PREVIEW_KEY)) {
+        setStatus("Free preview already used. Full access requires a Byteson.");
+        setStatusLink("View the collection on OpenSea →", "https://opensea.io/collection/bytesons");
+        return;
       }
-    } else {
-      setStatus("Audit complete.");
+
+      const payload = {
+        address,
+        projectName: projectName?.value?.trim() || "",
+        projectLink: projectLink?.value?.trim() || "",
+        projectCopy: projectCopy?.value?.trim() || "",
+      };
+
+      if (!payload.projectCopy) return setStatus("Paste your bio / description first.");
+
+      setStatus("Reviewing signal…");
+      if (runBtn) runBtn.disabled = true;
+
+      try {
+        const res = await fetch(`${WORKER}/signal-audit`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+
+        const text = await res.text();
+        if (runBtn) runBtn.disabled = false;
+
+        if (!res.ok) {
+          setStatus(`Tool error (${res.status}).`);
+          // show details safely as text (not HTML)
+          console.log("Tool error:", text);
+          return;
+        }
+
+        const data = JSON.parse(text);
+
+        if (outWrap) outWrap.style.display = "block";
+        if (out) {
+          out.style.filter = "";
+          out.style.pointerEvents = "";
+          out.textContent = data.report || "(No report.)";
+        }
+
+        if (data.preview) {
+          localStorage.setItem(PREVIEW_KEY, "true");
+          setStatus("Preview shown. Full access requires at least 1 Byteson.");
+          setStatusLink("Unlock full access on OpenSea →", "https://opensea.io/collection/bytesons");
+          applyPreviewMask();
+        } else {
+          setStatus("Audit complete.");
+        }
+      } catch (e) {
+        if (runBtn) runBtn.disabled = false;
+        setStatus("Tool call failed (network/CORS). This should improve once HTTPS is enabled.");
+        console.log("Network error:", e);
+      }
     }
-  } catch (err) {
-    runBtn.disabled = false;
-    setStatus("Tool call failed (network). Try again after HTTPS is enabled.");
-    console.log(err);
-  }
-}
 
-  // Wire buttons
-  checkBtn.disabled = true;
-  tool.style.display = "none";
-  outWrap.style.display = "none";
+    // Bind handlers
+    if (connectBtn) connectBtn.addEventListener("click", connect);
+    if (checkBtn) checkBtn.addEventListener("click", checkHolder);
+    if (runBtn) runBtn.addEventListener("click", runAudit);
 
-  connectBtn.addEventListener("click", connectWallet);
-  checkBtn.addEventListener("click", verifyHolderAccess);
-  runBtn.addEventListener("click", runAudit);
+    // Initial state
+    if (checkBtn) checkBtn.disabled = true;
+  });
 })();
