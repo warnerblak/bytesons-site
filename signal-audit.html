@@ -10,20 +10,20 @@
 </head>
 
 <body>
-  <main>
-    <!-- ONE CENTERED WRAPPER FOR EVERYTHING -->
-    <div class="container">
+  <!-- Use the same wrapper as index.html -->
+  <div class="wrap">
 
-      <!-- NAV -->
-      <nav class="nav" aria-label="Primary">
-        <a href="index.html">Home</a>
-        <a href="collection.html">Collection</a>
-        <a href="utility-lore.html">Utility &amp; Lore</a>
-        <a class="active" href="signal-audit.html">Signal Audit</a>
-        <a href="manifesto.html">Manifesto</a>
-        <a href="contact.html">Contact</a>
-      </nav>
+    <!-- NAV -->
+    <nav class="nav" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="collection.html">Collection</a>
+      <a href="utility-lore.html">Utility &amp; Lore</a>
+      <a class="active" href="signal-audit.html">Signal Audit</a>
+      <a href="manifesto.html">Manifesto</a>
+      <a href="contact.html">Contact</a>
+    </nav>
 
+    <main>
       <!-- TOOLS INDEX -->
       <section class="section">
         <div class="kicker">Tools</div>
@@ -67,7 +67,7 @@
         <p id="status" class="small" style="margin-top:14px;"></p>
         <p id="statusLink" class="small" style="margin-top:8px;"></p>
 
-        <!-- Actions (will now align with centered container) -->
+        <!-- Actions -->
         <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:18px;">
           <button id="connect" class="btn">Connect Wallet</button>
           <button id="check" class="btn btn-ghost" disabled>Verify Holder Access</button>
@@ -130,14 +130,14 @@
         ></pre>
       </section>
 
-      <!-- Worker URL -->
-      <script>
-        window.WORKER_URL = "https://bytesons-gate.warnerblak.workers.dev";
-      </script>
-      <script src="signal-audit.js"></script>
+    </main>
 
-    </div>
-  </main>
+    <!-- Worker URL -->
+    <script>
+      window.WORKER_URL = "https://bytesons-gate.warnerblak.workers.dev";
+    </script>
+    <script src="signal-audit.js"></script>
+
+  </div>
 </body>
 </html>
-
