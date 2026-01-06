@@ -19,38 +19,92 @@
     </nav>
 
     <header class="section">
-      <h1>Signal Audit</h1>
-      <p class="sub">Holder tool. Connect wallet to unlock.</p>
+  <h1>Signal Audit</h1>
 
-      <p id="status" class="small"></p>
+  <p class="sub">
+    A holder-only review of language, structure, and intent.
+  </p>
 
-      <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:14px;">
-        <button id="connect" class="btn">Connect Wallet</button>
-        <button id="check" class="btn btn-ghost" disabled>Check Holder Status</button>
-      </div>
-    </header>
+  <p class="small">
+    This tool evaluates <em>signal</em> — not hype, not price, not outcomes.
+    It’s designed to help you see how your project reads to someone encountering it for the first time.
+  </p>
+
+  <p id="status" class="small" style="margin-top:12px;"></p>
+
+  <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:18px;">
+    <button id="connect" class="btn">Connect Wallet</button>
+    <button id="check" class="btn btn-ghost" disabled>Verify Holder Access</button>
+  </div>
+</header>
+
+    <section class="section">
+  <div class="kicker">Notes</div>
+
+  <ul class="small" style="line-height:1.8; opacity:.75;">
+    <li>This tool does not evaluate market performance, pricing, or future outcomes.</li>
+    <li>It does not replace taste or judgment.</li>
+    <li>It is most useful early — before language hardens into habit.</li>
+  </ul>
+</section>
+
+
 
     <section class="section lg" id="tool" style="display:none;">
-      <div class="kicker">Run Audit</div>
+  <div class="kicker">Audit Input</div>
 
-      <label class="small">Project name (optional)</label>
-      <input id="projectName" class="input" placeholder="e.g., WCNetizens" />
+  <p class="small">
+    Paste the text you want reviewed. This can include a bio, homepage copy,
+    project description, or any combination of the above.
+  </p>
 
-      <label class="small" style="margin-top:14px;">Primary link (optional)</label>
-      <input id="projectLink" class="input" placeholder="https://..." />
+  <label class="small">Project name (optional)</label>
+  <input id="projectName" class="input" placeholder="e.g., WCNetizens" />
 
-      <label class="small" style="margin-top:14px;">Paste your copy (required)</label>
-      <textarea id="projectCopy" class="textarea" rows="12" placeholder="Paste: bio + homepage copy + description…"></textarea>
+  <label class="small" style="margin-top:14px;">Primary link (optional)</label>
+  <input id="projectLink" class="input" placeholder="https://…" />
 
-      <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:14px;">
-        <button id="run" class="btn">Generate Signal Audit</button>
-      </div>
+  <label class="small" style="margin-top:14px;">
+    Text to audit <span style="opacity:.6;">(required)</span>
+  </label>
+  <textarea
+    id="projectCopy"
+    class="textarea"
+    rows="12"
+    placeholder="Paste your bio, homepage copy, or project description here.&#10;&#10;More context produces a more accurate audit."
+  ></textarea>
 
-      <div class="section" id="outWrap" style="display:none;">
-        <div class="kicker">Report</div>
-        <pre id="out" style="white-space:pre-wrap; font-size:16px; line-height:1.65; color:rgba(242,242,242,.9);"></pre>
-      </div>
-    </section>
+  <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:18px;">
+    <button id="run" class="btn">Generate Signal Audit</button>
+  </div>
+
+  <p class="small" style="margin-top:12px; opacity:.7;">
+    The audit focuses on clarity, coherence, originality, restraint, and trust.
+    Financial language and speculation are intentionally ignored.
+  </p>
+</section>
+
+    <section class="section lg" id="outWrap" style="display:none;">
+  <div class="kicker">Audit Report</div>
+
+  <p class="small" style="margin-bottom:12px;">
+    Read this as an external perspective. You don’t need to agree with every point —
+    the goal is awareness, not compliance.
+  </p>
+
+  <pre
+    id="out"
+    style="
+      white-space: pre-wrap;
+      font-size: 16px;
+      line-height: 1.7;
+      color: rgba(242,242,242,.9);
+    "
+  ></pre>
+</section>
+
+
+    
 
     <footer class="footer">
       <span class="small">bytesons.xyz</span>
