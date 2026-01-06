@@ -57,6 +57,8 @@
     } catch {
       setStatus("Wallet connection cancelled.");
     }
+      const disconnectBtn = $("disconnect");
+      if (disconnectBtn) disconnectBtn.style.display = "inline-flex";
   }
 
   async function checkHolder() {
@@ -202,16 +204,49 @@
       console.log("Network error:", e);
     }
   }
+function resetUI() {
+  const checkBtn = $("check");
+  const disconnectBtn = $("disconnect");
+  const tool = $("tool");
+  const outWrap = $("outWrap");
+  const out = $("out");
+  const previewMask = document.getElementById("previewMask");
 
+  if (checkBtn) checkBtn.disabled = true;
+  if (disconnectBtn) disconnectBtn.style.display = "none";
+  if (tool) tool.style.display = "none";
+
+  if (outWrap) outWrap.style.display = "none";
+  if (out) {
+    out.textContent = "";
+    out.style.filter = "";
+    out.style.pointerEvents = "";
+  }
+  if (previewMask) previewMask.remove();
+}
+
+function disconnect() {
+  // Clear app session
+  address = null;
+  setStatus("Disconnected.");
+  resetUI();
+
+  // Optional: explain true disconnect behavior
+  setStatusLink("Manage connected sites in your wallet →", "https://metamask.io/faqs/");
+}
+
+  
   // Bind events after DOM loads
   window.addEventListener("DOMContentLoaded", () => {
     const connectBtn = $("connect");
     const checkBtn = $("check");
     const runBtn = $("run");
+    const disconnectBtn = $("disconnect");
 
     if (connectBtn) connectBtn.addEventListener("click", connect);
     if (checkBtn) checkBtn.addEventListener("click", checkHolder);
     if (runBtn) runBtn.addEventListener("click", runAudit);
+    if (disconnectBtn) disconnectBtn.addEventListener("click", disconnect);
 
     if (checkBtn) checkBtn.disabled = true;
   });
