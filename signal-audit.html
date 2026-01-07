@@ -23,8 +23,8 @@
   <link rel="stylesheet" href="styles.css" />
 
   <style>
-    /* Page-local polish only (keeps your global style intact) */
-    .tool-card{
+    /* Page-local styling only */
+    .card{
       margin-top: 12px;
       border: 1px solid rgba(242,242,242,.18);
       border-radius: 16px;
@@ -45,8 +45,13 @@
       border: 1px solid rgba(242,242,242,.14);
       background: rgba(0,0,0,.18);
       line-height: 1.85;
-      opacity: .9;
+      opacity: .92;
       word-break: break-word;
+    }
+    .status a{
+      display:inline-block;
+      margin-left: 10px;
+      opacity: .9;
     }
     .field{
       margin-top: 12px;
@@ -78,9 +83,7 @@
       line-height: 1.9;
       white-space: pre-wrap;
     }
-    .muted{
-      opacity: .7;
-    }
+    .muted{ opacity: .75; }
     .hr{
       height:1px;
       background: rgba(242,242,242,.10);
@@ -95,16 +98,12 @@
       background: rgba(0,0,0,.15);
       border: 1px solid rgba(242,242,242,.18);
     }
-    .btn[disabled]{
-      opacity: .55;
-      cursor: not-allowed;
-    }
+    .btn[disabled]{ opacity: .55; cursor: not-allowed; }
   </style>
 
   <script>
-    // Required config (keeps you from the “Set your Worker URL…” issue)
+    // REQUIRED: your JS reads window.WORKER_URL
     window.WORKER_URL = "https://bytesons-gate.warnerblak.workers.dev";
-    window.BYTESONS_CONTRACT = "0xb3b434f79f69b685c063860799bdc44dac7ef25e";
   </script>
 </head>
 
@@ -123,10 +122,7 @@
     <!-- HERO -->
     <header class="section">
       <h1>Signal Audit</h1>
-
-      <p class="sub">
-        A framework for how a project reads on first contact.
-      </p>
+      <p class="sub">A framework for how a project reads on first contact.</p>
 
       <p class="small" style="opacity:.85; line-height:1.85;">
         This tool evaluates signal — not hype, not price, not outcomes.
@@ -142,65 +138,65 @@
     <section class="section">
       <div class="kicker">Run an audit</div>
 
-      <div class="tool-card">
-        <!-- Guidance above wallet connection -->
+      <div class="card">
         <p class="small" style="opacity:.85; line-height:1.85; margin-top:0;">
           Connect an Ethereum wallet to verify Byteson holdings.
-          Once verified, enter a project bio and description and generate an audit.
+          Once verified, paste a project bio and description and generate an audit.
         </p>
 
-        <!-- Wallet controls -->
+        <!-- Wallet / Access controls (IDs must match your JS) -->
         <div class="row">
-          <button id="connectBtn" class="btn" type="button">Connect wallet</button>
-          <button id="disconnectBtn" class="btn btn-ghost" type="button" style="display:none;">Disconnect</button>
-          <span id="walletLabel" class="small muted"></span>
+          <button id="connect" class="btn" type="button">Connect wallet</button>
+          <button id="check" class="btn btn-ghost" type="button">Verify access</button>
+          <button id="disconnect" class="btn btn-ghost" type="button" style="display:none;">Disconnect</button>
         </div>
 
-        <!-- Status -->
-        <div id="status" class="status">
-          Status: <span id="statusText">Idle.</span>
+        <!-- Status (IDs must match your JS) -->
+        <div class="status">
+          <span id="status">Status: Idle.</span>
+          <span id="statusLink"></span>
         </div>
 
-        <div class="hr"></div>
+        <!-- Tool area (hidden until holder confirmed) -->
+        <div id="tool" style="display:none;">
+          <div class="hr"></div>
 
-        <!-- Inputs -->
-        <div class="field">
-          <label class="small" for="projectName"><strong>Project name</strong> (optional)</label>
-          <input id="projectName" type="text" placeholder="Optional. Keeps the output readable." />
-        </div>
+          <div class="field">
+            <label class="small" for="projectName"><strong>Project name</strong> (optional)</label>
+            <input id="projectName" type="text" placeholder="Optional. Keeps the output readable." />
+          </div>
 
-        <div class="field">
-          <label class="small" for="bio"><strong>Bio</strong></label>
-          <textarea id="bio" rows="4" placeholder="Paste the project bio (short)."></textarea>
-        </div>
+          <div class="field">
+            <label class="small" for="projectLink"><strong>Project link</strong> (optional)</label>
+            <input id="projectLink" type="text" placeholder="Optional. Website or X profile." />
+          </div>
 
-        <div class="field">
-          <label class="small" for="desc"><strong>Description</strong></label>
-          <textarea id="desc" rows="7" placeholder="Paste the project description (long)."></textarea>
-        </div>
+          <div class="field">
+            <label class="small" for="projectCopy"><strong>Bio + description</strong></label>
+            <textarea id="projectCopy" rows="10" placeholder="Paste the project bio and description here."></textarea>
+          </div>
 
-        <div class="row">
-          <button id="runBtn" class="btn" type="button">Generate Signal Audit</button>
-          <button id="clearBtn" class="btn btn-ghost" type="button">Clear</button>
-        </div>
+          <div class="row">
+            <button id="run" class="btn" type="button">Generate Signal Audit</button>
+          </div>
 
-        <!-- Results -->
-        <div id="resultsWrap" style="margin-top:14px; display:none;">
-          <div class="kicker">Result</div>
-          <div id="results" class="results"></div>
-          <p class="mini" style="margin-top:10px;">
-            Note: this is a reading, not a prediction.
-          </p>
+          <div id="outWrap" style="display:none;">
+            <div class="kicker" style="margin-top:16px;">Result</div>
+            <div id="out" class="results"></div>
+            <p class="mini" style="margin-top:10px;">
+              Note: this is a reading, not a prediction.
+            </p>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- FRAMEWORK (PUBLIC PREVIEW) -->
+    <!-- FRAMEWORK (PUBLIC) -->
     <section class="section">
       <div class="kicker">Framework (public)</div>
 
       <p class="small" style="opacity:.85; line-height:1.85;">
-        The audit is built from a few consistent checks. You can use these manually, even without running the tool.
+        The audit is built from consistent checks. You can use these manually, even without running the tool.
       </p>
 
       <ul class="small" style="line-height:1.9; opacity:.85; margin-top:12px;">
@@ -212,7 +208,7 @@
       </ul>
 
       <p class="small" style="opacity:.75; line-height:1.85; margin-top:12px;">
-        If a project reads as “permanence” without specifying what’s fixed, it’s usually marketing.
+        If a project reads as permanence without specifying what’s fixed, it’s usually marketing.
         If it states one mechanism and one boundary, it’s usually real.
       </p>
     </section>
@@ -220,7 +216,6 @@
     <!-- REFERENCE -->
     <section class="section">
       <div class="kicker">Reference</div>
-
       <div class="small" style="opacity:.8; line-height:1.9; margin-top:10px;">
         <a href="https://etherscan.io/address/0xb3b434f79f69b685c063860799bdc44dac7ef25e" target="_blank" rel="noopener noreferrer">Bytesons contract</a><br/>
         <a href="collection.html">Collection index</a><br/>
@@ -229,36 +224,7 @@
     </section>
   </main>
 
-  <!--
-    This page expects a companion script.
-    If you already have signal-audit.js, keep it in the repo root and it will hook into the IDs above.
-  -->
+  <!-- Your existing script -->
   <script src="signal-audit.js"></script>
-
-  <script>
-    // Minimal UX helpers that won't conflict with your main script:
-    // - Clear button behavior
-    // - Safe defaults (doesn't handle wallet/tool logic)
-    (function(){
-      const clearBtn = document.getElementById("clearBtn");
-      const bio = document.getElementById("bio");
-      const desc = document.getElementById("desc");
-      const projectName = document.getElementById("projectName");
-      const resultsWrap = document.getElementById("resultsWrap");
-      const results = document.getElementById("results");
-      const statusText = document.getElementById("statusText");
-
-      if (clearBtn) {
-        clearBtn.addEventListener("click", () => {
-          if (projectName) projectName.value = "";
-          if (bio) bio.value = "";
-          if (desc) desc.value = "";
-          if (resultsWrap) resultsWrap.style.display = "none";
-          if (results) results.textContent = "";
-          if (statusText) statusText.textContent = "Idle.";
-        });
-      }
-    })();
-  </script>
 </body>
 </html>
