@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Artifact Finder — Bytesons</title>
+  <meta name="description" content="Find a Byteson to buy on secondary using simple filters. No wallet. No hype. Just a clean path to the artifacts." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Bytesons — Artifact Finder" />
+  <meta property="og:description" content="Find a Byteson to buy on secondary using simple filters. No wallet. No hype." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://bytesons.xyz/artifact-finder.html" />
+  <meta property="og:image" content="https://bytesons.xyz/assets/img/og-manifesto.png" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Bytesons — Artifact Finder" />
+  <meta name="twitter:description" content="Find a Byteson to buy on secondary using simple filters. No wallet. No hype." />
+  <meta name="twitter:image" content="https://bytesons.xyz/assets/img/og-manifesto.png" />
+
+  <link rel="icon" href="/assets/img/favicon.png" sizes="32x32" />
+  <link rel="icon" href="/assets/img/favicon.ico" />
+  <link rel="stylesheet" href="styles.css" />
+
+  <style>
+    .card{
+      border: 1px solid rgba(242,242,242,.14);
+      border-radius: 16px;
+      padding: 18px;
+      background: rgba(242,242,242,.03);
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 14px;
+    }
+    .controls{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 14px;
+    }
+    @media (min-width: 700px){
+      .controls{
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    .row{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-top: 12px;
+    }
+    select{
+      width: 100%;
+      margin-top: 8px;
+      background: rgba(242,242,242,.04);
+      color: var(--fg);
+      border: 1px solid rgba(242,242,242,.14);
+      border-radius: 12px;
+      padding: 12px 12px;
+      font-size: 16px;
+      outline: none;
+    }
+    .result{
+      border: 1px solid rgba(242,242,242,.12);
+      border-radius: 14px;
+      padding: 14px;
+      background: rgba(0,0,0,.35);
+    }
+    .pill{
+      display:inline-block;
+      border: 1px solid rgba(242,242,242,.18);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      letter-spacing: .02em;
+      opacity: .85;
+      margin-right: 8px;
+      margin-top: 8px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+    .mono{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+    <nav class="nav" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="collection.html">Collection</a>
+      <a class="active" href="artifact-finder.html">Artifact Finder</a>
+      <a href="utility-lore.html">Utility &amp; Lore</a>
+      <a href="signal-audit.html">Signal Audit</a>
+      <a href="palette-study.html">Palette Study</a>
+      <a href="manifesto.html">Manifesto</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+
+    <header class="section">
+      <h1>Artifact Finder</h1>
+      <p class="sub">A clean path to secondary.</p>
+
+      <p class="small" style="opacity:.85; line-height:1.85;">
+        Choose a few constraints. We’ll surface a short set of artifacts that match.
+      </p>
+
+      <p class="small" style="opacity:.75; line-height:1.85; margin-top:10px;">
+        No wallet. No scoring. Just filtering and links.
+      </p>
+    </header>
+
+    <section class="section">
+      <div class="card">
+        <div class="kicker">Filters</div>
+
+        <div class="controls">
+          <div>
+            <div class="small" style="opacity:.8;">Vibe</div>
+            <select id="vibe">
+              <option value="">Any</option>
+              <option value="clean">Clean</option>
+              <option value="nocturne">Nocturne</option>
+              <option value="chrome">Chrome</option>
+              <option value="glitch">Glitch</option>
+              <option value="street">Street</option>
+              <option value="ritual">Ritual</option>
+            </select>
+          </div>
+
+          <div>
+            <div class="small" style="opacity:.8;">Palette family</div>
+            <select id="palette">
+              <option value="">Any</option>
+              <option value="terminal">Terminal</option>
+              <option value="bone">Bone</option>
+              <option value="dusk">Dusk</option>
+              <option value="pastels">Pastels</option>
+              <option value="original">Original</option>
+            </select>
+          </div>
+
+          <div>
+            <div class="small" style="opacity:.8;">Accent / motif</div>
+            <select id="motif">
+              <option value="">Any</option>
+              <option value="shades">Shades</option>
+              <option value="hat">Hat</option>
+              <option value="hood">Hood</option>
+              <option value="mask">Mask</option>
+              <option value="headphones">Headphones</option>
+              <option value="minimal">Minimal</option>
+            </select>
+          </div>
+
+          <div>
+            <div class="small" style="opacity:.8;">Mood</div>
+            <select id="mood">
+              <option value="">Any</option>
+              <option value="soft">Soft</option>
+              <option value="sharp">Sharp</option>
+              <option value="odd">Odd</option>
+              <option value="calm">Calm</option>
+              <option value="loud">Loud</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <button id="run" class="btn" type="button">Find artifacts</button>
+          <button id="shuffle" class="btn btn-ghost" type="button">Shuffle</button>
+          <button id="copyLink" class="btn btn-ghost" type="button">Copy share link</button>
+          <span id="status" class="small" style="opacity:.75;"></span>
+        </div>
+
+        <p class="small" style="opacity:.65; line-height:1.7; margin-top:12px;">
+          This page links out to OpenSea. Secondary is the canonical entry.
+        </p>
+      </div>
+
+      <div class="kicker" style="margin-top:28px;">Results</div>
+      <div id="results" class="grid"></div>
+
+      <p class="small" style="opacity:.7; line-height:1.85; margin-top:18px;">
+        If results feel thin, that’s intentional: the finder only returns artifacts with explicit tags in the index.
+      </p>
+    </section>
+
+    <section class="section">
+      <div class="kicker">Reference</div>
+      <div class="small" style="opacity:.8; line-height:1.9; margin-top:10px;">
+        <a href="collection.html">Index</a><br/>
+        <a href="https://opensea.io/collection/bytesons" target="_blank" rel="noopener noreferrer">Archive</a>
+      </div>
+    </section>
+  </main>
+
+  <script src="artifact-finder.js"></script>
+</body>
+</html>
