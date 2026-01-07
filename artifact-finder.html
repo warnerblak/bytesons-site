@@ -4,11 +4,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Artifact Finder — Bytesons</title>
-  <meta name="description" content="Find a Byteson to buy on secondary using simple filters. No wallet. No hype. Just a clean path to the artifacts." />
+  <meta name="description" content="Find a Byteson to buy on secondary using simple constraints. No wallet. No scoring. Just a clean index-to-link flow." />
 
   <!-- Open Graph -->
   <meta property="og:title" content="Bytesons — Artifact Finder" />
-  <meta property="og:description" content="Find a Byteson to buy on secondary using simple filters. No wallet. No hype." />
+  <meta property="og:description" content="Find a Byteson using simple constraints. No wallet. No scoring. Just links." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://bytesons.xyz/artifact-finder.html" />
   <meta property="og:image" content="https://bytesons.xyz/assets/img/og-manifesto.png" />
@@ -16,7 +16,7 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Bytesons — Artifact Finder" />
-  <meta name="twitter:description" content="Find a Byteson to buy on secondary using simple filters. No wallet. No hype." />
+  <meta name="twitter:description" content="Find a Byteson using simple constraints. No wallet. No scoring. Just links." />
   <meta name="twitter:image" content="https://bytesons.xyz/assets/img/og-manifesto.png" />
 
   <link rel="icon" href="/assets/img/favicon.png" sizes="32x32" />
@@ -102,19 +102,52 @@
       <a href="contact.html">Contact</a>
     </nav>
 
+    <!-- OPENER -->
     <header class="section">
       <h1>Artifact Finder</h1>
-      <p class="sub">A clean path to secondary.</p>
+      <p class="sub">A secondary index.</p>
 
-      <p class="small" style="opacity:.85; line-height:1.85;">
-        Choose a few constraints. We’ll surface a short set of artifacts that match.
+      <p class="small" style="opacity:.9; line-height:1.85;">
+        Bytesons is an Ethereum-native NFT collection of on-chain characters.
+      </p>
+
+      <p class="small" style="opacity:.85; line-height:1.85; margin-top:10px;">
+        Use this page to narrow your taste into a small set of links.
       </p>
 
       <p class="small" style="opacity:.75; line-height:1.85; margin-top:10px;">
-        No wallet. No scoring. Just filtering and links.
+        No wallet. No ranking. Just constraints and references.
       </p>
     </header>
 
+    <!-- HOW TO USE -->
+    <section class="section">
+      <div class="kicker">How to use</div>
+
+      <ul class="small" style="line-height:1.9; opacity:.85; margin-top:12px;">
+        <li>Select 1–3 constraints.</li>
+        <li>Click <strong>Find artifacts</strong> (or <strong>Shuffle</strong>).</li>
+        <li>Open a result to view on OpenSea.</li>
+      </ul>
+
+      <div class="small" style="margin-top:12px; opacity:.75;">
+        Reference:
+        <a href="https://etherscan.io/address/0xb3b434f79f69b685c063860799bdc44dac7ef25e" target="_blank" rel="noopener noreferrer">Contract</a>,
+        <a href="collection.html">Index</a>,
+        <a href="https://opensea.io/collection/bytesons" target="_blank" rel="noopener noreferrer">Archive</a>
+      </div>
+    </section>
+
+    <!-- MECHANISM / BOUNDARY (kept short) -->
+    <section class="section">
+      <div class="kicker">Mechanism</div>
+
+      <p class="small" style="opacity:.85; line-height:1.85;">
+        The finder only returns artifacts that are tagged in the site index. It is not a price tool.
+      </p>
+    </section>
+
+    <!-- FILTERS -->
     <section class="section">
       <div class="card">
         <div class="kicker">Filters</div>
@@ -179,16 +212,12 @@
         </div>
 
         <p class="small" style="opacity:.65; line-height:1.7; margin-top:12px;">
-          This page links out to OpenSea. Secondary is the canonical entry.
+          Results link out to OpenSea. Verify the contract when in doubt.
         </p>
       </div>
 
       <div class="kicker" style="margin-top:28px;">Results</div>
       <div id="results" class="grid"></div>
-
-      <p class="small" style="opacity:.7; line-height:1.85; margin-top:18px;">
-        If results feel thin, that’s intentional: the finder only returns artifacts with explicit tags in the index.
-      </p>
     </section>
 
     <section class="section">
