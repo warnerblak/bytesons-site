@@ -4,28 +4,28 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Signal Audit — Bytesons</title>
-  <meta name="description" content="Signal Audit: a holder-only review of language, structure, and intent." />
+  <meta name="description" content="Signal Audit evaluates signal — not hype, not price, not outcomes. Holders can run audits; anyone can read the framework." />
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Signal Audit — Bytesons" />
-  <meta property="og:description" content="A holder-only review of language, structure, and intent." />
+  <meta property="og:title" content="Bytesons — Signal Audit" />
+  <meta property="og:description" content="Evaluate signal — not hype, not price, not outcomes. Holders can run audits; anyone can read the framework." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://bytesons.xyz/signal-audit.html" />
   <meta property="og:image" content="https://bytesons.xyz/assets/img/og-manifesto.png" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Signal Audit — Bytesons" />
-  <meta name="twitter:description" content="A holder-only review of language, structure, and intent." />
+  <meta name="twitter:title" content="Bytesons — Signal Audit" />
+  <meta name="twitter:description" content="Evaluate signal — not hype, not price, not outcomes. Holders can run audits; anyone can read the framework." />
   <meta name="twitter:image" content="https://bytesons.xyz/assets/img/og-manifesto.png" />
 
-  <link rel="icon" href="/assets/img/favicon.png" />
+  <link rel="icon" href="/assets/img/favicon.png" sizes="32x32" />
+  <link rel="icon" href="/assets/img/favicon.ico" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
   <main class="wrap">
-
     <nav class="nav" aria-label="Primary">
       <a href="index.html">Home</a>
       <a href="collection.html">Collection</a>
@@ -36,97 +36,58 @@
       <a href="contact.html">Contact</a>
     </nav>
 
-    <!-- TOOLS INDEX -->
-    <section class="section">
-      <div class="kicker">Tools</div>
+    <header class="section">
+      <h1>Signal Audit</h1>
+      <p class="sub">Language as signal.</p>
 
-      <p class="sub">
-        A small set of holder-only instruments designed to clarify language,
-        structure, and intent.
+      <p class="small" style="opacity:.85; line-height:1.85;">
+        This tool evaluates signal — not hype, not price, not outcomes.
+        It reflects how your project reads to someone encountering it for the first time.
       </p>
 
-      <ul class="small" style="line-height:1.9; opacity:.8; margin-top:12px;">
-        <li>
-          <strong>Signal Audit</strong> — A structured review of how a project reads
-          to an external observer.
-        </li>
+      <p class="small" style="opacity:.8; line-height:1.85; margin-top:10px;">
+        Anyone can read the framework below. Holders can run audits.
+      </p>
+
+      <p class="small" style="opacity:.85; line-height:1.85; margin-top:10px;">
+        Please connect an Ethereum wallet to verify your Byteson NFT holdings.
+      </p>
+    </header>
+
+    <!-- Tool UI lives on the Signal Audit app page / embed -->
+    <section class="section">
+      <div class="kicker">Tool</div>
+
+      <p class="small" style="opacity:.75; line-height:1.85;">
+        If the holder check stalls, hard refresh and try again. Desktop wallet extensions tend to be most reliable.
+      </p>
+
+      <div class="embed-wrap" style="height: 980px;">
+        <iframe src="signal-audit-app.html" title="Signal Audit tool"></iframe>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="kicker">Framework</div>
+
+      <ul class="small" style="line-height:1.9; opacity:.85; margin-top:12px;">
+        <li><strong>Clarity</strong> — can a new visitor explain what the project is in one sentence?</li>
+        <li><strong>Mechanism</strong> — is the core claim tied to a concrete, verifiable mechanism?</li>
+        <li><strong>Boundaries</strong> — does it state what it is not, without defensiveness?</li>
+        <li><strong>Coherence</strong> — does language match the visual and structural choices?</li>
+        <li><strong>Trust</strong> — do links and references reduce ambiguity?</li>
       </ul>
     </section>
 
-    <!-- HEADER -->
-    <header class="section">
-      <h1>Signal Audit</h1>
+    <section class="section">
+      <div class="kicker">Reference</div>
 
-            <p id="status" class="small" style="margin-top:14px;"></p>
-      <p id="statusLink" class="small" style="margin-top:8px;"></p>
-
-      <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:18px;">
-        <button id="connect" class="btn">Connect Wallet</button>
-        <button id="check" class="btn btn-ghost" disabled>Verify Holder Access</button>
-        <button id="disconnect" class="btn btn-ghost" style="display:none;">Disconnect</button>
-      </div>
-    </header>
-
-    <!-- TOOL -->
-    <section class="section lg" id="tool" style="display:none;">
-      <div class="kicker">Audit Input</div>
-
-      <p class="small">
-        Paste the text you want reviewed. This can include a bio, homepage copy,
-        or a short project description.
-      </p>
-
-      <div class="small" style="opacity:.75; line-height:1.8; margin-top:10px;">
-        If you’re combining multiple pieces, label them clearly
-        (e.g. <em>BIO:</em>, <em>HOMEPAGE:</em>, <em>DESCRIPTION:</em>).
-      </div>
-
-      <label class="small" style="margin-top:16px;">Project name (optional)</label>
-      <input id="projectName" class="input" placeholder="e.g., WCNetizens" />
-
-      <label class="small" style="margin-top:14px;">Primary link (optional)</label>
-      <input id="projectLink" class="input" placeholder="https://…" />
-
-      <label class="small" style="margin-top:14px;">
-        Text to audit <span style="opacity:.6;">(required)</span>
-      </label>
-      <textarea
-        id="projectCopy"
-        class="textarea"
-        rows="12"
-        placeholder="Paste your bio, homepage copy, or project description here."
-      ></textarea>
-
-      <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:18px;">
-        <button id="run" class="btn">Generate Signal Audit</button>
+      <div class="small" style="opacity:.8; line-height:1.9; margin-top:10px;">
+        <a href="utility-lore.html">Context</a><br/>
+        <a href="https://etherscan.io/address/0xb3b434f79f69b685c063860799bdc44dac7ef25e" target="_blank" rel="noopener noreferrer">Contract</a><br/>
+        <a href="https://opensea.io/collection/bytesons" target="_blank" rel="noopener noreferrer">Archive</a>
       </div>
     </section>
-
-    <!-- OUTPUT -->
-    <section class="section lg" id="outWrap" style="display:none;">
-      <div class="kicker">Audit Report</div>
-
-      <p class="small" style="margin-bottom:12px;">
-        Read this as an external perspective. You don’t need to agree with every point —
-        the goal is awareness, not compliance.
-      </p>
-
-      <pre
-        id="out"
-        style="
-          white-space: pre-wrap;
-          font-size: 16px;
-          line-height: 1.7;
-          color: rgba(242,242,242,.9);
-        "
-      ></pre>
-    </section>
-
   </main>
-
-  <script>
-    window.WORKER_URL = "https://bytesons-gate.warnerblak.workers.dev";
-  </script>
-  <script src="signal-audit.js"></script>
 </body>
 </html>
