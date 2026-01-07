@@ -1,0 +1,32 @@
+[
+  {
+    "id": 381,
+    "tags": ["clean", "original", "minimal", "calm"],
+    "reason": "Balanced silhouette and restrained read. Works as an entry artifact."
+  },
+  {
+    "id": 843,
+    "tags": ["nocturne", "dusk", "shades", "sharp"],
+    "reason": "Darker read with a tighter profile. Feels composed rather than loud."
+  },
+  {
+    "id": 1560,
+    "tags": ["glitch", "terminal", "odd", "headphones"],
+    "reason": "More signal-noise texture without breaking the system."
+  },
+  {
+    "id": 1376,
+    "tags": ["chrome", "original", "shades", "loud"],
+    "reason": "High contrast accent points—still reads as a fixed artifact."
+  },
+  {
+    "id": 221,
+    "tags": ["street", "pastels", "hat", "soft"],
+    "reason": "A gentler palette read—good when you want less edge."
+  },
+  {
+    "id": 999,
+    "tags": ["ritual", "bone", "mask", "odd"],
+    "reason": "A more symbolic read while staying inside the constraint set."
+  }
+]
