@@ -214,3 +214,22 @@ p{ margin: 0 0 22px; font-size: 18px; }
   font-size: 16px;
   outline: none;
 }
+/* Fix select + option visibility on dark backgrounds */
+select{
+  background-color: rgba(242,242,242,.04);
+  color: var(--fg);
+}
+
+select option{
+  background-color: #000000;
+  color: var(--fg);
+}
+
+/* Ensure focus + hover states remain readable */
+select:focus,
+select:hover{
+  border-color: rgba(242,242,242,.35);
+  outline: none;
+}
+
+
