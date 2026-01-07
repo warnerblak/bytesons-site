@@ -3,20 +3,20 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Artifact Finder — Bytesons</title>
-  <meta name="description" content="Find a Byteson to buy on secondary using simple constraints. No wallet. No scoring. Just a clean index-to-link flow." />
+  <title>Pick a Byteson — Bytesons</title>
+  <meta name="description" content="Pick a Byteson using simple filters. No wallet. No scoring. Just a short list of links to view on OpenSea." />
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Bytesons — Artifact Finder" />
-  <meta property="og:description" content="Find a Byteson using simple constraints. No wallet. No scoring. Just links." />
+  <meta property="og:title" content="Bytesons — Pick a Byteson" />
+  <meta property="og:description" content="Pick a Byteson using simple filters. No wallet. No scoring. Just links." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://bytesons.xyz/artifact-finder.html" />
   <meta property="og:image" content="https://bytesons.xyz/assets/img/og-manifesto.png" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Bytesons — Artifact Finder" />
-  <meta name="twitter:description" content="Find a Byteson using simple constraints. No wallet. No scoring. Just links." />
+  <meta name="twitter:title" content="Bytesons — Pick a Byteson" />
+  <meta name="twitter:description" content="Pick a Byteson using simple filters. No wallet. No scoring. Just links." />
   <meta name="twitter:image" content="https://bytesons.xyz/assets/img/og-manifesto.png" />
 
   <link rel="icon" href="/assets/img/favicon.png" sizes="32x32" />
@@ -43,9 +43,7 @@
       margin-top: 14px;
     }
     @media (min-width: 700px){
-      .controls{
-        grid-template-columns: 1fr 1fr;
-      }
+      .controls{ grid-template-columns: 1fr 1fr; }
     }
     .row{
       display:flex;
@@ -94,7 +92,7 @@
     <nav class="nav" aria-label="Primary">
       <a href="index.html">Home</a>
       <a href="collection.html">Collection</a>
-      <a class="active" href="artifact-finder.html">Artifact Finder</a>
+      <a class="active" href="artifact-finder.html">Pick a Byteson</a>
       <a href="utility-lore.html">Utility &amp; Lore</a>
       <a href="signal-audit.html">Signal Audit</a>
       <a href="palette-study.html">Palette Study</a>
@@ -104,19 +102,19 @@
 
     <!-- OPENER -->
     <header class="section">
-      <h1>Artifact Finder</h1>
-      <p class="sub">A secondary index.</p>
+      <h1>Pick a Byteson</h1>
+      <p class="sub">A simple guide to choosing on secondary.</p>
 
       <p class="small" style="opacity:.9; line-height:1.85;">
         Bytesons is an Ethereum-native NFT collection of on-chain characters.
       </p>
 
       <p class="small" style="opacity:.85; line-height:1.85; margin-top:10px;">
-        Use this page to narrow your taste into a small set of links.
+        Use this page to narrow your taste into a short list of links.
       </p>
 
       <p class="small" style="opacity:.75; line-height:1.85; margin-top:10px;">
-        No wallet. No ranking. Just constraints and references.
+        No wallet. No scoring. Just filters and references.
       </p>
     </header>
 
@@ -125,9 +123,9 @@
       <div class="kicker">How to use</div>
 
       <ul class="small" style="line-height:1.9; opacity:.85; margin-top:12px;">
-        <li>Select 1–3 constraints.</li>
-        <li>Click <strong>Find artifacts</strong> (or <strong>Shuffle</strong>).</li>
-        <li>Open a result to view on OpenSea.</li>
+        <li>Pick 1–3 filters below.</li>
+        <li>Click <strong>Show matches</strong> (or <strong>Surprise me</strong>).</li>
+        <li>Open a result to view it on OpenSea.</li>
       </ul>
 
       <div class="small" style="margin-top:12px; opacity:.75;">
@@ -138,12 +136,12 @@
       </div>
     </section>
 
-    <!-- MECHANISM / BOUNDARY (kept short) -->
+    <!-- MECHANISM / BOUNDARY -->
     <section class="section">
-      <div class="kicker">Mechanism</div>
+      <div class="kicker">What this tool is</div>
 
       <p class="small" style="opacity:.85; line-height:1.85;">
-        The finder only returns artifacts that are tagged in the site index. It is not a price tool.
+        The picker only shows Bytesons that are tagged in the site index. It is not a price tool and it does not recommend returns.
       </p>
     </section>
 
@@ -154,32 +152,32 @@
 
         <div class="controls">
           <div>
-            <div class="small" style="opacity:.8;">Vibe</div>
+            <div class="small" style="opacity:.8;">Look</div>
             <select id="vibe">
               <option value="">Any</option>
-              <option value="clean">Clean</option>
-              <option value="nocturne">Nocturne</option>
-              <option value="chrome">Chrome</option>
-              <option value="glitch">Glitch</option>
-              <option value="street">Street</option>
-              <option value="ritual">Ritual</option>
+              <option value="clean">Simple / clean</option>
+              <option value="nocturne">Dark / low-light</option>
+              <option value="chrome">High-contrast / chrome</option>
+              <option value="glitch">Noisy / glitchy</option>
+              <option value="street">Streetwear</option>
+              <option value="ritual">Symbolic</option>
             </select>
           </div>
 
           <div>
-            <div class="small" style="opacity:.8;">Palette family</div>
+            <div class="small" style="opacity:.8;">Color</div>
             <select id="palette">
               <option value="">Any</option>
-              <option value="terminal">Terminal</option>
-              <option value="bone">Bone</option>
-              <option value="dusk">Dusk</option>
-              <option value="pastels">Pastels</option>
-              <option value="original">Original</option>
+              <option value="original">Neutral / classic</option>
+              <option value="terminal">Green / terminal</option>
+              <option value="bone">Warm / bone</option>
+              <option value="dusk">Purple / dusk</option>
+              <option value="pastels">Soft / pastel</option>
             </select>
           </div>
 
           <div>
-            <div class="small" style="opacity:.8;">Accent / motif</div>
+            <div class="small" style="opacity:.8;">Accessory</div>
             <select id="motif">
               <option value="">Any</option>
               <option value="shades">Shades</option>
@@ -187,26 +185,26 @@
               <option value="hood">Hood</option>
               <option value="mask">Mask</option>
               <option value="headphones">Headphones</option>
-              <option value="minimal">Minimal</option>
+              <option value="minimal">No accessory</option>
             </select>
           </div>
 
           <div>
-            <div class="small" style="opacity:.8;">Mood</div>
+            <div class="small" style="opacity:.8;">Energy</div>
             <select id="mood">
               <option value="">Any</option>
+              <option value="calm">Calm</option>
               <option value="soft">Soft</option>
               <option value="sharp">Sharp</option>
               <option value="odd">Odd</option>
-              <option value="calm">Calm</option>
               <option value="loud">Loud</option>
             </select>
           </div>
         </div>
 
         <div class="row">
-          <button id="run" class="btn" type="button">Find artifacts</button>
-          <button id="shuffle" class="btn btn-ghost" type="button">Shuffle</button>
+          <button id="run" class="btn" type="button">Show matches</button>
+          <button id="shuffle" class="btn btn-ghost" type="button">Surprise me</button>
           <button id="copyLink" class="btn btn-ghost" type="button">Copy share link</button>
           <span id="status" class="small" style="opacity:.75;"></span>
         </div>
@@ -216,8 +214,12 @@
         </p>
       </div>
 
-      <div class="kicker" style="margin-top:28px;">Results</div>
+      <div class="kicker" style="margin-top:28px;">Matches</div>
       <div id="results" class="grid"></div>
+
+      <p class="small" style="opacity:.7; line-height:1.85; margin-top:18px;">
+        If the list is short, that’s intentional: only indexed, tagged artifacts appear here.
+      </p>
     </section>
 
     <section class="section">
