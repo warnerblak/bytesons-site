@@ -4,11 +4,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Palette Study — Bytesons</title>
-  <meta name="description" content="Palette Study: an interactive exploration of color within the Bytesons visual system." />
+  <meta name="description" content="Palette Study is a public visual reference for exploring perception through color. The live collection contains fixed on-chain artifacts." />
 
   <!-- Open Graph -->
   <meta property="og:title" content="Bytesons — Palette Study" />
-  <meta property="og:description" content="An interactive exploration of color within the Bytesons visual system." />
+  <meta property="og:description" content="A public visual reference for exploring perception through color (no wallet required)." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://bytesons.xyz/palette-study.html" />
   <meta property="og:image" content="https://bytesons.xyz/assets/img/og-manifesto.png" />
@@ -16,125 +16,87 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Bytesons — Palette Study" />
-  <meta name="twitter:description" content="An interactive exploration of color within the Bytesons visual system." />
+  <meta name="twitter:description" content="A public visual reference for exploring perception through color (no wallet required)." />
   <meta name="twitter:image" content="https://bytesons.xyz/assets/img/og-manifesto.png" />
 
-  <link rel="icon" href="/assets/img/favicon.png" />
+  <link rel="icon" href="/assets/img/favicon.png" sizes="32x32" />
+  <link rel="icon" href="/assets/img/favicon.ico" />
   <link rel="stylesheet" href="styles.css" />
 
   <style>
-    /* Minimal, page-local styling to match your existing cadence */
     .study-card{
-      margin-top: 12px;
-      border: 1px solid rgba(242,242,242,.18);
-      border-radius: 16px;
-      padding: 16px;
-      background: rgba(0,0,0,.22);
-    }
-    .study-canvas{
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap: 10px;
-      margin-top: 12px;
-    }
-    .study-img{
-      width: min(460px, 100%);
-      border-radius: 14px;
-      display:block;
       border: 1px solid rgba(242,242,242,.14);
+      border-radius: 16px;
+      padding: 18px;
+      background: rgba(242,242,242,.03);
     }
-    .study-meta{
-      width:100%;
-      display:flex;
-      justify-content:space-between;
-      gap: 12px;
-      flex-wrap:wrap;
-      opacity:.85;
-      line-height:1.7;
+
+    .study-canvas{
+      margin-top: 14px;
+      border: 1px solid rgba(242,242,242,.12);
+      border-radius: 14px;
+      overflow: hidden;
     }
+
+    .study-stage{
+      --shift: 0deg;
+      filter: hue-rotate(var(--shift));
+      transition: filter 120ms linear;
+    }
+
+    .study-img{
+      display:block;
+      width: 100%;
+      height: auto;
+    }
+
     .swatches{
       display:flex;
-      gap: 10px;
+      gap:10px;
       flex-wrap:wrap;
-      margin-top: 12px;
-      align-items:center;
+      margin-top: 14px;
     }
     .swatch{
-      display:inline-flex;
-      align-items:center;
-      gap: 8px;
-      border: 1px solid rgba(242,242,242,.18);
-      background: rgba(0,0,0,.25);
-      color: rgba(242,242,242,.88);
+      background: rgba(242,242,242,.08);
+      color: var(--fg);
+      border: 1px solid rgba(242,242,242,.14);
+      border-radius: 12px;
       padding: 10px 12px;
-      border-radius: 999px;
-      cursor:pointer;
-      user-select:none;
+      cursor: pointer;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 13px;
+      letter-spacing: .02em;
     }
-    .swatch:focus{
-      outline: 2px solid rgba(242,242,242,.35);
-      outline-offset: 2px;
-    }
+    .swatch.active{ border-color: rgba(242,242,242,.55); }
+
     .dot{
-      width: 14px;
-      height: 14px;
-      border-radius: 999px;
+      display:inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 8px;
+      vertical-align: middle;
       border: 1px solid rgba(242,242,242,.25);
-      box-shadow: inset 0 0 0 1px rgba(0,0,0,.35);
     }
-    .swatch.active{
-      border-color: rgba(242,242,242,.35);
-      background: rgba(242,242,242,.06);
+
+    .hue-wrap{
+      margin-top: 14px;
+      border-top: 1px solid rgba(242,242,242,.12);
+      padding-top: 14px;
     }
-    .hint{
+
+    .hue-slider{
+      width: 100%;
       margin-top: 10px;
-      opacity:.7;
-      line-height:1.85;
+      accent-color: rgba(242,242,242,.85);
     }
 
-    /* Palette filters (intentionally restrained) */
-    /* NOTE: these are subtle by design; we can tune intensity later if you want. */
+    /* Palettes (restrained) */
     .p-original { filter: none; }
-    
-    /* Muted terminal green */
-    .p-terminal { filter: hue-rotate(85deg) saturate(0.75) brightness(0.98) contrast(1.02); }
-
-    /* Bone: warm, slightly desaturated */
-    .p-bone     { filter: sepia(0.22) saturate(0.85) brightness(1.05) contrast(0.98); }
-
-    /* Dusk: subtle purple tone */
-    .p-dusk     { filter: hue-rotate(255deg) saturate(0.8) brightness(1.0) contrast(1.0); }
-
-    /* Pastels: soft lift + gentle desat (kept restrained) */
-.p-pastels  { filter: saturate(0.9) brightness(1.08) contrast(0.96); }
-
-    /* Wrapper filter layer so hue shift stacks on top of the palette filter */
-.study-stage{
-  --shift: 0deg;
-  filter: hue-rotate(var(--shift));
-  transition: filter 120ms linear;
-}
-
-/* Slider styling (minimal) */
-.hue-wrap{
-  margin-top: 14px;
-  border-top: 1px solid rgba(242,242,242,.12);
-  padding-top: 14px;
-}
-
-.hue-slider{
-  width: 100%;
-  margin-top: 10px;
-  accent-color: rgba(242,242,242,.85); /* keeps it neutral */
-}
-
-    <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:12px;">
-  <button id="copyLink" class="btn btn-ghost" type="button">Copy share link</button>
-  <span id="copyStatus" class="small" style="opacity:.7; align-self:center;"></span>
-</div>
-
-
+    .p-terminal { filter: saturate(0.85) contrast(1.05) brightness(0.98) hue-rotate(95deg); }
+    .p-bone     { filter: saturate(0.65) brightness(1.08) contrast(0.92); }
+    .p-dusk     { filter: saturate(0.95) contrast(1.02) brightness(0.98) hue-rotate(250deg); }
+    .p-pastels  { filter: saturate(0.9) brightness(1.08) contrast(0.96); }
   </style>
 </head>
 
@@ -150,143 +112,90 @@
       <a href="contact.html">Contact</a>
     </nav>
 
-    <!-- HERO -->
     <header class="section">
       <h1>Palette Study</h1>
+      <p class="sub">A public visual reference.</p>
 
-      <p class="sub">
-        An interactive exploration of color within the Bytesons visual system.
-      </p>
-
-      <p class="small" style="opacity:.9; line-height:1.85;">
-        This study does not modify real Bytesons.
-        All on-chain artifacts are fixed on Ethereum.
+      <p class="small" style="opacity:.85; line-height:1.85;">
+        Explore color and perception without owning anything.
       </p>
     </header>
 
-    <!-- HOW TO USE -->
     <section class="section">
-      <div class="kicker">How to use this page</div>
-
-      <ul class="small" style="line-height:1.9; opacity:.85; margin-top:12px;">
-        <li><strong>Choose a palette</strong> to shift tone without changing structure.</li>
-        <li><strong>Observe</strong> how perception changes while the artifact stays constant.</li>
-        <li><strong>Browse</strong> the live collection if you want a real on-chain artifact.</li>
-      </ul>
-
-      <div style="margin-top:14px;">
-        <a class="btn" href="https://opensea.io/collection/bytesons" target="_blank" rel="noopener noreferrer">
-          Browse Bytesons on OpenSea →
-        </a>
-      </div>
-    </section>
-
-    <!-- STUDY -->
-    <section class="section">
-      <div class="kicker">Study</div>
-
       <div class="study-card">
-        <div class="study-meta small">
+        <div class="kicker">Study</div>
+
+        <div class="small" style="opacity:.8; line-height:1.9; margin-top:10px;">
           <div><strong>Base artifact</strong>: byteson-palette.png</div>
           <div><strong>Active palette</strong>: <span id="activeName">Original</span></div>
         </div>
 
         <div class="study-canvas">
-  <div id="stage" class="study-stage">
-    <img
-      id="artifact"
-      class="study-img p-original"
-      src="assets/img/byteson-1376.jpeg"
-      alt="Bytesons palette study base artifact"
-    />
-  </div>
-</div>
-
+          <div id="stage" class="study-stage">
+            <img
+              id="artifact"
+              class="study-img p-original"
+              src="assets/img/byteson-palette.png"
+              alt="Bytesons palette study base artifact"
+            />
+          </div>
+        </div>
 
         <div class="swatches" role="group" aria-label="Palette controls">
-  <button class="swatch active" data-p="original" type="button">
-    <span class="dot" style="background: linear-gradient(135deg,#222,#aaa);"></span>
-    Original
-  </button>
-
-  <button class="swatch" data-p="terminal" type="button">
-    <span class="dot" style="background:#2f6b4e;"></span>
-    Terminal
-  </button>
-
-  <button class="swatch" data-p="bone" type="button">
-    <span class="dot" style="background:#d8cfb8;"></span>
-    Bone
-  </button>
-
-  <button class="swatch" data-p="dusk" type="button">
-    <span class="dot" style="background:#5e4a86;"></span>
-    Dusk
-  </button>
-
-  <button class="swatch" data-p="pastels" type="button">
-    <span class="dot" style="background:#cdb7d8;"></span>
-    Pastels
-  </button>
-</div>
-
+          <button class="swatch active" data-p="original" type="button">
+            <span class="dot" style="background: linear-gradient(135deg,#222,#aaa);"></span>Original
+          </button>
+          <button class="swatch" data-p="terminal" type="button">
+            <span class="dot" style="background:#2f6b4e;"></span>Terminal
+          </button>
+          <button class="swatch" data-p="bone" type="button">
+            <span class="dot" style="background:#d8cfb8;"></span>Bone
+          </button>
+          <button class="swatch" data-p="dusk" type="button">
+            <span class="dot" style="background:#5e4a86;"></span>Dusk
+          </button>
+          <button class="swatch" data-p="pastels" type="button">
+            <span class="dot" style="background:#cdb7d8;"></span>Pastels
+          </button>
+        </div>
 
         <div class="hue-wrap">
-  <div class="small" style="opacity:.85;">
-    <strong>Hue</strong> — <span id="hueVal">0°</span>
-  <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:12px;">
-  <button id="copyLink" class="btn btn-ghost" type="button">Copy reference link</button>
-  <span id="copyStatus" class="small" style="opacity:.7; align-self:center;"></span>
-</div>
-</div>
-          
-<p class="small" style="opacity:.7; line-height:1.8; margin-top:14px;">
-  The live collection contains fixed on-chain artifacts.<br />
-  This study explores signal, not ownership.
-</p>
+          <div class="small" style="opacity:.85;">
+            <strong>Hue</strong> — <span id="hueVal">0°</span>
+          </div>
 
-  <input
-    id="hueSlider"
-    type="range"
-    min="-30"
-    max="30"
-    step="1"
-    value="0"
-    aria-label="Hue shift slider"
-    class="hue-slider"
-  />
-  
-  <div class="small" style="opacity:.65; line-height:1.6;">
-  Subtle adjustment within the active palette. Hue offset persists when switching palettes.
-</div>
+          <input
+            id="hueSlider"
+            type="range"
+            min="-30"
+            max="30"
+            step="1"
+            value="0"
+            aria-label="Hue shift slider"
+            class="hue-slider"
+          />
 
+          <div class="small" style="opacity:.65; line-height:1.6;">
+            Subtle adjustment within the active palette. Hue offset persists when switching palettes.
+          </div>
 
+          <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:12px;">
+            <button id="copyLink" class="btn btn-ghost" type="button">Copy reference link</button>
+            <span id="copyStatus" class="small" style="opacity:.7; align-self:center;"></span>
+          </div>
 
-        <p class="small hint">
-          Note: palettes are intentionally limited. The goal is signal clarity, not customization
-        </p>
+          <p class="small" style="opacity:.7; line-height:1.8; margin-top:14px;">
+            The live collection contains fixed on-chain artifacts.<br />
+            This study explores signal, not ownership.
+          </p>
+        </div>
       </div>
     </section>
 
-    <!-- NOTES / MECHANISM -->
-    <section class="section">
-      <div class="kicker">Notes</div>
-
-      <p class="small" style="opacity:.85; line-height:1.85;">
-        Time in Bytesons is expressed through immutability: core traits and metadata are fixed on Ethereum and do not change.
-      </p>
-
-      <p class="small" style="opacity:.75; line-height:1.85; margin-top:10px;">
-        This page is a visual reference only. It does not represent trait rarity or modify on-chain data.
-      </p>
-    </section>
-
-    <!-- REFERENCE -->
     <section class="section">
       <div class="kicker">Reference</div>
 
       <div class="small" style="opacity:.8; line-height:1.9; margin-top:10px;">
-        <a href="https://etherscan.io/address/0xb3b434f79f69b685c063860799bdc44dac7ef25e" target="_blank" rel="noopener noreferrer">Contract</a><br/>
         <a href="collection.html">Index</a><br/>
         <a href="https://opensea.io/collection/bytesons" target="_blank" rel="noopener noreferrer">Archive</a>
       </div>
