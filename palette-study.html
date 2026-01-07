@@ -187,7 +187,7 @@
 
       <div class="study-card">
         <div class="study-meta small">
-          <div><strong>Base artifact</strong>: byteson-1376.jpeg</div>
+          <div><strong>Base artifact</strong>: byteson-palette.png</div>
           <div><strong>Active palette</strong>: <span id="activeName">Original</span></div>
         </div>
 
@@ -234,7 +234,16 @@
         <div class="hue-wrap">
   <div class="small" style="opacity:.85;">
     <strong>Hue</strong> — <span id="hueVal">0°</span>
-  </div>
+  <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:12px;">
+  <button id="copyLink" class="btn btn-ghost" type="button">Copy reference link</button>
+  <span id="copyStatus" class="small" style="opacity:.7; align-self:center;"></span>
+</div>
+</div>
+          
+<p class="small" style="opacity:.7; line-height:1.8; margin-top:14px;">
+  The live collection contains fixed on-chain artifacts.<br />
+  This study explores signal, not ownership.
+</p>
 
   <input
     id="hueSlider"
@@ -248,9 +257,9 @@
   />
   
   <div class="small" style="opacity:.65; line-height:1.6;">
-    Subtle adjustment within the active palette. Resets when you change palettes.
-  </div>
+  Subtle adjustment within the active palette. Hue offset persists when switching palettes.
 </div>
+
 
 
         <p class="small hint">
