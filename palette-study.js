@@ -24,7 +24,6 @@
   let currentHue = hueSlider ? (parseInt(hueSlider.value, 10) || 0) : 0;
 
   function clampHue(n) {
-    // Keep consistent with your slider bounds
     if (n > 30) return 30;
     if (n < -30) return -30;
     return n;
@@ -52,11 +51,12 @@
     if (activeName) activeName.textContent = nameMap[currentPalette] || "Original";
 
     swatches.forEach((b) => {
-      const isActive = b.getAttribute("data-p") === currentPalette;
+      const isActive = (b.getAttribute("data-p") || "").toLowerCase() === currentPalette;
       b.classList.toggle("active", isActive);
       b.setAttribute("aria-pressed", isActive ? "true" : "false");
     });
 
+    // IMPORTANT: do NOT reset hue when switching palettes
     if (updateUrl) writeStateToUrl();
   }
 
@@ -64,45 +64,34 @@
     const url = new URL(window.location.href);
     url.searchParams.set("p", currentPalette);
     url.searchParams.set("h", String(currentHue));
-
-    // Don’t create history spam; keep it quiet
     window.history.replaceState({}, "", url.toString());
   }
 
   function readStateFromUrl() {
     const url = new URL(window.location.href);
     const p = (url.searchParams.get("p") || "original").toLowerCase();
-    const hRaw = url.searchParams.get("h");
-    const h = clampHue(parseInt(hRaw, 10) || 0);
-
-    return {
-      palette: validPalettes.has(p) ? p : "original",
-      hue: h,
-    };
+    const h = clampHue(parseInt(url.searchParams.get("h"), 10) || 0);
+    return { palette: validPalettes.has(p) ? p : "original", hue: h };
   }
 
-  async function copyShareLink() {
-    if (!copyBtn) return;
-
+  async function copyReferenceLink() {
     const url = new URL(window.location.href);
     url.searchParams.set("p", currentPalette);
     url.searchParams.set("h", String(currentHue));
-
-    const shareUrl = url.toString();
+    const ref = url.toString();
 
     try {
-      await navigator.clipboard.writeText(shareUrl);
+      await navigator.clipboard.writeText(ref);
       if (copyStatus) copyStatus.textContent = "Copied.";
       setTimeout(() => {
         if (copyStatus) copyStatus.textContent = "";
       }, 1600);
-    } catch (e) {
-      // Fallback: select via prompt (still works everywhere)
-      window.prompt("Copy this link:", shareUrl);
+    } catch {
+      window.prompt("Copy this link:", ref);
     }
   }
 
-  // Wire swatches
+  // Palette buttons
   swatches.forEach((btn) => {
     btn.addEventListener("click", () => {
       const key = (btn.getAttribute("data-p") || "original").toLowerCase();
@@ -110,18 +99,15 @@
     });
   });
 
-  // Wire hue slider
+  // Hue slider
   if (hueSlider) {
     hueSlider.addEventListener("input", () => {
-      const deg = parseInt(hueSlider.value, 10) || 0;
-      setHue(deg, { syncSlider: true, updateUrl: true });
+      setHue(parseInt(hueSlider.value, 10) || 0, { syncSlider: true, updateUrl: true });
     });
   }
 
-  // Wire copy button
-  if (copyBtn) {
-    copyBtn.addEventListener("click", copyShareLink);
-  }
+  // Copy button
+  if (copyBtn) copyBtn.addEventListener("click", copyReferenceLink);
 
   // Init from URL
   const initial = readStateFromUrl();
