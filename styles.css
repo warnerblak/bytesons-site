@@ -72,10 +72,7 @@ h1{
   letter-spacing: -0.01em;
 }
 
-/* Pixel accent for the homepage title only */
-.logo-pixel{
-  font-family: 'VT323', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-  letter-spacing: 0.02em;
+
 }
 
 h2{
