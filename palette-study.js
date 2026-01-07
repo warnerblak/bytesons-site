@@ -91,7 +91,6 @@
     }
   }
 
-  // Palette buttons
   swatches.forEach((btn) => {
     btn.addEventListener("click", () => {
       const key = (btn.getAttribute("data-p") || "original").toLowerCase();
@@ -99,17 +98,14 @@
     });
   });
 
-  // Hue slider
   if (hueSlider) {
     hueSlider.addEventListener("input", () => {
       setHue(parseInt(hueSlider.value, 10) || 0, { syncSlider: true, updateUrl: true });
     });
   }
 
-  // Copy button
   if (copyBtn) copyBtn.addEventListener("click", copyReferenceLink);
 
-  // Init from URL
   const initial = readStateFromUrl();
   setPalette(initial.palette, { updateUrl: false });
   setHue(initial.hue, { syncSlider: true, updateUrl: false });
