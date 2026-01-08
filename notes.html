@@ -6,14 +6,12 @@
   <title>Notes — Bytesons</title>
   <meta name="description" content="Notes are reader observations. They do not define the work." />
 
-  <!-- Open Graph -->
   <meta property="og:title" content="Bytesons — Notes" />
   <meta property="og:description" content="Reader observations. Not lore. Not announcements." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://bytesons.xyz/notes.html" />
   <meta property="og:image" content="https://bytesons.xyz/assets/img/og-manifesto.png" />
 
-  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Bytesons — Notes" />
   <meta name="twitter:description" content="Reader observations. Not lore. Not announcements." />
@@ -22,6 +20,38 @@
   <link rel="icon" href="/assets/img/favicon.png" sizes="32x32" />
   <link rel="icon" href="/assets/img/favicon.ico" />
   <link rel="stylesheet" href="styles.css" />
+
+  <style>
+    .note-card{
+      border: 1px solid rgba(242,242,242,.12);
+      border-radius: 14px;
+      padding: 14px;
+      background: rgba(0,0,0,.35);
+      margin-top: 12px;
+    }
+    .note-meta{
+      display:flex;
+      gap: 12px;
+      flex-wrap:wrap;
+      align-items:center;
+      opacity:.75;
+      font-size: 13px;
+      letter-spacing: .02em;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      margin-bottom: 10px;
+    }
+    .note-text{
+      white-space: pre-wrap;
+      line-height: 1.75;
+      opacity: .9;
+      font-size: 16px;
+    }
+    .divider{
+      border-top: 1px solid rgba(242,242,242,.12);
+      margin-top: 18px;
+      padding-top: 18px;
+    }
+  </style>
 </head>
 
 <body>
@@ -36,58 +66,57 @@
       <a href="contact.html">Contact</a>
     </nav>
 
-    <!-- OPENER -->
     <header class="section">
       <h1>Notes</h1>
-
-      <p class="sub">
-        Reader observations.
-      </p>
+      <p class="sub">Reader observations.</p>
 
       <p class="small" style="opacity:.9; line-height:1.85;">
         Notes are short observations left by readers of the work.
       </p>
-
       <p class="small" style="opacity:.85; line-height:1.85; margin-top:10px;">
         They do not define lore. They do not alter the artifacts.
       </p>
-
-      <p class="small" style="opacity:.75; line-height:1.85; margin-top:10px;">
-        Think of this page as margin space.
-      </p>
     </header>
 
-    <!-- RULES / BOUNDARIES -->
     <section class="section">
       <div class="kicker">Boundaries</div>
-
       <ul class="small" style="line-height:1.9; opacity:.85; margin-top:12px;">
-        <li>Notes are append-only.</li>
-        <li>They are shown chronologically.</li>
+        <li>Append-only.</li>
+        <li>Chronological.</li>
         <li>No replies, threads, or reactions.</li>
-        <li>Price talk, speculation, and announcements are off-topic.</li>
+        <li>Price talk and speculation are off-topic.</li>
       </ul>
     </section>
 
-    <!-- PLACEHOLDER FOR ENTRIES -->
+    <!-- Read-only entries -->
     <section class="section">
       <div class="kicker">Entries</div>
+      <div id="notesList"></div>
 
-      <div class="small" style="opacity:.7; line-height:1.85; margin-top:12px;">
-        Notes will appear here.
-      </div>
+      <p id="notesStatus" class="small" style="opacity:.7; margin-top:12px;"></p>
 
-      <div class="small" style="opacity:.6; line-height:1.85; margin-top:8px;">
-        Writing access will be limited to holders.
+      <!-- Write access (wired in step 2; safe to leave visible as “coming online”) -->
+      <div class="divider">
+        <div class="kicker">Write access</div>
+        <p class="small" style="opacity:.8; line-height:1.85;">
+          Writing will be limited to holders.
+        </p>
+
+        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:12px;">
+          <button id="connect" class="btn">Connect Wallet</button>
+          <button id="postBtn" class="btn btn-ghost" disabled>Post note</button>
+        </div>
+
+        <textarea id="noteText" class="textarea" rows="4" placeholder="One note. Keep it short."></textarea>
+        <p id="postStatus" class="small" style="opacity:.7; margin-top:10px;"></p>
       </div>
     </section>
-
-    <!-- FOOTER NOTE -->
-    <footer class="section" style="opacity:.7;">
-      <p class="small" style="line-height:1.85;">
-        This page records commentary, not canon.
-      </p>
-    </footer>
   </main>
+
+  <script>
+    // Put your worker URL here (same one you use elsewhere)
+    window.NOTES_WORKER_URL = "https://bytesons-gate.warnerblak.workers.dev";
+  </script>
+  <script src="notes.js"></script>
 </body>
 </html>
