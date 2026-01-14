@@ -1,231 +1,228 @@
+<!-- COPY/REPLACE: Signal Framework page
+     File: signal-framework.html  (or replace your existing signal-audit.html content)
+     Notes:
+     - This uses the same “single-column, calm sections” structure your Bytesons pages use.
+     - Keep your existing <header>/<nav>/<footer> blocks if your site already has them site-wide.
+-->
+
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Signal Audit — Bytesons</title>
-  <meta name="description" content="Signal Audit evaluates signal — not hype, not price, not outcomes. A framework for how a project reads on first contact." />
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="Bytesons — Signal Audit" />
-  <meta property="og:description" content="Signal Audit evaluates signal — not hype, not price, not outcomes. A framework for how a project reads on first contact." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://bytesons.xyz/signal-audit.html" />
-  <meta property="og:image" content="https://bytesons.xyz/assets/img/og-manifesto.png" />
-
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Bytesons — Signal Audit" />
-  <meta name="twitter:description" content="Signal Audit evaluates signal — not hype, not price, not outcomes. A framework for how a project reads on first contact." />
-  <meta name="twitter:image" content="https://bytesons.xyz/assets/img/og-manifesto.png" />
-
-  <link rel="icon" href="/assets/img/favicon.png" />
-  <link rel="stylesheet" href="styles.css" />
-
-  <style>
-    /* Page-local styling only */
-    .card{
-      margin-top: 12px;
-      border: 1px solid rgba(242,242,242,.18);
-      border-radius: 16px;
-      padding: 16px;
-      background: rgba(0,0,0,.22);
-    }
-    .row{
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-      align-items:center;
-      margin-top: 12px;
-    }
-    .status{
-      margin-top: 12px;
-      padding: 12px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(242,242,242,.14);
-      background: rgba(0,0,0,.18);
-      line-height: 1.85;
-      opacity: .92;
-      word-break: break-word;
-    }
-    .status a{
-      display:inline-block;
-      margin-left: 10px;
-      opacity: .9;
-    }
-    .field{
-      margin-top: 12px;
-    }
-    label{
-      display:block;
-      margin-bottom: 6px;
-      opacity: .85;
-    }
-    textarea, input[type="text"]{
-      width: 100%;
-      border-radius: 14px;
-      border: 1px solid rgba(242,242,242,.18);
-      background: rgba(0,0,0,.25);
-      color: rgba(242,242,242,.9);
-      padding: 12px;
-      line-height: 1.6;
-      outline: none;
-    }
-    textarea:focus, input[type="text"]:focus{
-      border-color: rgba(242,242,242,.35);
-    }
-    .results{
-      margin-top: 14px;
-      padding: 14px;
-      border-radius: 14px;
-      border: 1px solid rgba(242,242,242,.14);
-      background: rgba(0,0,0,.18);
-      line-height: 1.9;
-      white-space: pre-wrap;
-    }
-    .muted{ opacity: .75; }
-    .hr{
-      height:1px;
-      background: rgba(242,242,242,.10);
-      margin: 14px 0;
-    }
-    .mini{
-      font-size: 0.95rem;
-      opacity: .78;
-      line-height: 1.85;
-    }
-    .btn-ghost{
-      background: rgba(0,0,0,.15);
-      border: 1px solid rgba(242,242,242,.18);
-    }
-    .btn[disabled]{ opacity: .55; cursor: not-allowed; }
-  </style>
-
-  <script>
-    // REQUIRED: your JS reads window.WORKER_URL
-    window.WORKER_URL = "https://bytesons-gate.warnerblak.workers.dev";
-  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Signal Framework — Bytesons</title>
+  <meta name="description" content="A calm framework for observing signal, surfacing risk, and navigating NFTs with clarity — regardless of chain." />
+  <!-- Keep your existing stylesheet reference -->
+  <link rel="stylesheet" href="./styles.css" />
 </head>
 
 <body>
-  <main class="wrap">
-    <nav class="nav" aria-label="Primary">
-      <a href="index.html">Home</a>
-      <a href="collection.html">Collection</a>
-      <a href="pick-a-byteson.html">pick-a-byteson</a>
-      <a href="utility-lore.html">Utility &amp; Lore</a>
-      <a class="active" href="signal-audit.html">Signal Audit</a>
-      <a href="palette-study.html">Palette Study</a>
-      <a href="manifesto.html">Manifesto</a>
-      <a href="contact.html">Contact</a>
-    </nav>
+
+  <!-- If your site uses a shared header/nav, keep that and remove this placeholder -->
+  <!--
+  <header class="site-header">
+    ... your existing nav ...
+  </header>
+  -->
+
+  <main class="container">
 
     <!-- HERO -->
-    <header class="section">
-      <h1>Signal Audit</h1>
-      <p class="sub">A framework for how a project reads on first contact.</p>
-
-      <p class="small" style="opacity:.85; line-height:1.85;">
-        This tool evaluates signal — not hype, not price, not outcomes.
-        It’s designed to reflect how your project reads to someone encountering it for the first time.
-      </p>
-
-      <p class="small" style="opacity:.8; line-height:1.85; margin-top:10px;">
-        Anyone can read the framework below. Holders can run audits.
-      </p>
-    </header>
-
-    <!-- TOOL -->
     <section class="section">
-      <div class="kicker">Run an audit</div>
-
-      <div class="card">
-        <p class="small" style="opacity:.85; line-height:1.85; margin-top:0;">
-          Connect an Ethereum wallet to verify Byteson holdings.
-          Once verified, paste a project bio and description and generate an audit.
-        </p>
-
-        <!-- Wallet / Access controls (IDs must match your JS) -->
-        <div class="row">
-          <button id="connect" class="btn" type="button">Connect wallet</button>
-          <button id="check" class="btn btn-ghost" type="button">Verify access</button>
-          <button id="disconnect" class="btn btn-ghost" type="button" style="display:none;">Disconnect</button>
-        </div>
-
-        <!-- Status (IDs must match your JS) -->
-        <div class="status">
-          <span id="status">Status: Idle.</span>
-          <span id="statusLink"></span>
-        </div>
-
-        <!-- Tool area (hidden until holder confirmed) -->
-        <div id="tool" style="display:none;">
-          <div class="hr"></div>
-
-          <div class="field">
-            <label class="small" for="projectName"><strong>Project name</strong> (optional)</label>
-            <input id="projectName" type="text" placeholder="Optional. Keeps the output readable." />
-          </div>
-
-          <div class="field">
-            <label class="small" for="projectLink"><strong>Project link</strong> (optional)</label>
-            <input id="projectLink" type="text" placeholder="Optional. Website or X profile." />
-          </div>
-
-          <div class="field">
-            <label class="small" for="projectCopy"><strong>Bio + description</strong></label>
-            <textarea id="projectCopy" rows="10" placeholder="Paste the project bio and description here."></textarea>
-          </div>
-
-          <div class="row">
-            <button id="run" class="btn" type="button">Generate Signal Audit</button>
-          </div>
-
-          <div id="outWrap" style="display:none;">
-            <div class="kicker" style="margin-top:16px;">Result</div>
-            <div id="out" class="results"></div>
-            <p class="mini" style="margin-top:10px;">
-              Note: this is a reading, not a prediction.
-            </p>
-          </div>
-        </div>
-      </div>
+      <h1>Signal Framework</h1>
+      <p class="muted">
+        A calm framework for observing signal, surfacing risk, and navigating NFTs with clarity — regardless of chain.
+      </p>
     </section>
 
-    <!-- FRAMEWORK (PUBLIC) -->
-    <section class="section">
-      <div class="kicker">Framework (public)</div>
+    <hr class="divider" />
 
-      <p class="small" style="opacity:.85; line-height:1.85;">
-        The audit is built from consistent checks. You can use these manually, even without running the tool.
+    <!-- INTRO -->
+    <section class="section">
+      <h2>What this is</h2>
+      <p>
+        Most decisions in NFTs are made under pressure. Price movement, social momentum, urgency, and noise distort
+        judgment — especially when information is incomplete. The Signal Framework exists to slow that process down.
+      </p>
+      <p>
+        Instead of reacting to hype or price, it focuses on <strong>signals that persist over time</strong>: structure,
+        behavior, incentives, and unknowns. These signals change slowly, are harder to manipulate, and provide clearer
+        context for decision-making.
+      </p>
+      <p class="muted">
+        Signal is not prediction. Signal is not certainty. Signal is what remains observable when noise is removed.
+      </p>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- DEFINITION -->
+    <section class="section">
+      <h2>What we mean by “signal”</h2>
+      <p>
+        Signal refers to non-price information that reflects <strong>intent, consistency, and risk</strong> over time.
+        These signals don’t tell you what will happen — they help you understand what you are agreeing to accept.
       </p>
 
-      <ul class="small" style="line-height:1.9; opacity:.85; margin-top:12px;">
-        <li><strong>Center</strong> — what is the project in one sentence, without metaphors?</li>
-        <li><strong>Mechanism</strong> — what is actually fixed, verifiable, or constrained?</li>
-        <li><strong>Claims</strong> — what is promised vs. what is demonstrated?</li>
-        <li><strong>Audience</strong> — who is it for, and what do they do next?</li>
-        <li><strong>Trust surface</strong> — references, links, contract clarity, and obvious gaps.</li>
+      <ul class="list">
+        <li>How long projects and founders have existed</li>
+        <li>How consistently they communicate</li>
+        <li>How incentives are framed</li>
+        <li>How much is known versus unknown</li>
+        <li>How much flexibility or authority is retained</li>
+      </ul>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- WHY -->
+    <section class="section">
+      <h2>Why this exists</h2>
+      <p>
+        Most losses in NFTs don’t come from bad intentions. They come from committing too quickly, misunderstanding risk,
+        confusing momentum with durability, and accepting unknowns without realizing it.
+      </p>
+      <p>
+        The Signal Framework exists to make those unknowns visible <strong>before</strong> commitment.
+      </p>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- DOES NOT -->
+    <section class="section">
+      <h2>What this framework does not do</h2>
+      <p class="muted">These tools are designed to support clearer thinking — not safer bets.</p>
+
+      <ul class="list">
+        <li>It does not recommend purchases</li>
+        <li>It does not predict outcomes</li>
+        <li>It does not rank projects</li>
+        <li>It does not assign value</li>
+        <li>It does not remove risk</li>
       </ul>
 
-      <p class="small" style="opacity:.75; line-height:1.85; margin-top:12px;">
-        If a project reads as permanence without specifying what’s fixed, it’s usually marketing.
-        If it states one mechanism and one boundary, it’s usually real.
+      <p>
+        The decision — and the risk — always remains with the individual.
       </p>
     </section>
 
-    <!-- REFERENCE -->
+    <hr class="divider" />
+
+    <!-- TOOLS -->
     <section class="section">
-      <div class="kicker">Reference</div>
-      <div class="small" style="opacity:.8; line-height:1.9; margin-top:10px;">
-        <a href="https://etherscan.io/address/0xb3b434f79f69b685c063860799bdc44dac7ef25e" target="_blank" rel="noopener noreferrer">Bytesons contract</a><br/>
-        <a href="collection.html">Collection index</a><br/>
-        <a href="https://opensea.io/collection/bytesons" target="_blank" rel="noopener noreferrer">OpenSea archive</a>
-      </div>
+      <h2>The Signal Tools</h2>
+      <p class="muted">
+        Each tool applies the Signal Framework in a different context. Calm, readable, and chain-aware without being
+        chain-dependent.
+      </p>
+
+      <!-- Tool: Signal Audit -->
+      <article class="card">
+        <h3 class="card-title">Signal Audit</h3>
+        <p class="muted">Observing persistence</p>
+        <p>
+          Signal Audit observes how a collection behaves once noise is removed — focusing on structure, behavior, and time
+          rather than price or hype.
+        </p>
+        <ul class="list">
+          <li><strong>Structural</strong> signals: visual coherence, distribution, palette</li>
+          <li><strong>Behavioral</strong> signals: holding patterns, presence, churn</li>
+          <li><strong>Temporal</strong> signals: what persists across time</li>
+        </ul>
+        <p class="muted">
+          Core question: <strong>What signals persist when speculation fades?</strong>
+        </p>
+        <!-- Link to your internal tool page if you have one -->
+        <!-- <p><a class="link" href="./signal-audit.html">Open Signal Audit →</a></p> -->
+      </article>
+
+      <!-- Tool: Project Risk Lens -->
+      <article class="card">
+        <h3 class="card-title">Project Risk Lens</h3>
+        <p class="muted">Observing risk before commitment</p>
+        <p>
+          Project Risk Lens helps collectors slow down and surface uncertainty before committing to a new project —
+          regardless of chain.
+        </p>
+        <ul class="list">
+          <li>Presence signals</li>
+          <li>Alignment signals</li>
+          <li>Incentive pressure</li>
+          <li>Technical exposure</li>
+          <li>Unknown density</li>
+        </ul>
+        <p class="muted">
+          No scores. No recommendations. No urgency. Just context.
+        </p>
+        <!-- <p><a class="link" href="./risk-lens.html">Open Project Risk Lens →</a></p> -->
+      </article>
+
+      <!-- Tool: Palette Study -->
+      <article class="card">
+        <h3 class="card-title">Palette Study</h3>
+        <p class="muted">Observing visual coherence</p>
+        <p>
+          Explore color distribution, consistency, and variation across a collection — training the eye to recognize
+          cohesion, intent, and drift over time.
+        </p>
+        <p class="muted">Built for observation, not evaluation.</p>
+        <!-- <p><a class="link" href="./palette-study.html">Open Palette Study →</a></p> -->
+      </article>
+
+      <!-- Tool: Artifact Finder -->
+      <article class="card">
+        <h3 class="card-title">Artifact Finder</h3>
+        <p class="muted">Exploring structure</p>
+        <p>
+          Explore a collection based on structural traits and visual properties rather than market activity.
+        </p>
+        <p class="muted"><strong>What actually exists here?</strong> Not what is trending.</p>
+        <!-- <p><a class="link" href="./artifact-finder.html">Open Artifact Finder →</a></p> -->
+      </article>
+
     </section>
+
+    <hr class="divider" />
+
+    <!-- WHY BYTESONS -->
+    <section class="section">
+      <h2>Why Bytesons built this</h2>
+      <p>
+        Bytesons has lived through multiple cycles, long periods of silence, and real on-chain exposure. That experience
+        informs how these tools are built.
+      </p>
+      <p>
+        They are designed primarily to help Bytesons holders navigate the space with more clarity, less urgency, and
+        lower emotional cost — regardless of chain.
+      </p>
+      <p class="muted">
+        The tools are not gated because clarity improves when shared. Bytesons remains the home base. The framework
+        extends outward.
+      </p>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- CLOSING -->
+    <section class="section">
+      <h2>A final note</h2>
+      <p>
+        These tools don’t remove risk. They make risk visible.
+      </p>
+      <p class="muted">
+        And visibility is often the difference between a considered decision and a costly one.
+      </p>
+    </section>
+
   </main>
 
-  <!-- Your existing script -->
-  <script src="signal-audit.js"></script>
+  <!-- If your site uses a shared footer, keep it and remove this placeholder -->
+  <!--
+  <footer class="site-footer">
+    ...
+  </footer>
+  -->
+
 </body>
 </html>
