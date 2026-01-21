@@ -5,7 +5,7 @@
 
 const DEFAULTS = {
   // IMPORTANT: set this (get from dashboard)
-  REOWN_PROJECT_ID: "PASTE_YOUR_PROJECT_ID_HERE",
+  REOWN_PROJECT_ID: "a42d982909ef925371e2d4012178db27",
 
   // Your GitHub Pages URL (must match actual origin)
   APP_NAME: "Bytesons",
