@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Bytesons Arcade (Holders Only)</title>
+  <meta name="description" content="Bytesons Arcade — holders only." />
+  <link rel="stylesheet" href="./arcade.css" />
+</head>
+
+<body>
+  <div id="shell">
+    <header id="topbar">
+      <div class="brand">
+        <div class="dot"></div>
+        <div>
+          <div class="title">BYTESONS ARCADE</div>
+          <div class="sub">Holders Only Access</div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="btnConnect" class="btn">Connect Wallet</button>
+        <div id="statusPill" class="pill">Not connected</div>
+      </div>
+    </header>
+
+    <main id="main">
+      <section id="gate" class="panel">
+        <h1>Access Check</h1>
+        <p class="muted">
+          This arcade is locked. Connect an Ethereum wallet that holds at least <b>1 Bytesons NFT</b>.
+        </p>
+
+        <div class="grid">
+          <div class="card">
+            <div class="label">Network</div>
+            <div id="network" class="value">—</div>
+          </div>
+          <div class="card">
+            <div class="label">Wallet</div>
+            <div id="wallet" class="value">—</div>
+          </div>
+          <div class="card">
+            <div class="label">Bytesons Held</div>
+            <div id="held" class="value">—</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <button id="btnEnter" class="btn primary" disabled>Enter Arcade</button>
+          <button id="btnDisconnect" class="btn ghost" disabled>Disconnect</button>
+        </div>
+
+        <div id="message" class="message"></div>
+
+        <details class="details">
+          <summary>What is being checked?</summary>
+          <div class="muted">
+            We call <code>balanceOf(yourWallet)</code> on the Bytesons ERC-721 contract.
+            If it’s &gt; 0, you’re in.
+          </div>
+        </details>
+      </section>
+
+      <section id="gameWrap" class="panel hidden">
+        <div class="gameHeader">
+          <div>
+            <h2>BYTE-RUNNER</h2>
+            <p class="muted">Arrow keys / WASD • Space = boost • Survive as long as you can</p>
+          </div>
+          <div class="row">
+            <div class="pill" id="scorePill">Score: 0</div>
+            <button id="btnExit" class="btn ghost">Exit</button>
+          </div>
+        </div>
+
+        <div id="game"></div>
+
+        <footer class="muted tiny">
+          Tip: This is the “starter build.” Next we can swap in Bytesons art (head as rider),
+          trait-based cosmetics, and a leaderboard (Cloudflare Worker).
+        </footer>
+      </section>
+    </main>
+  </div>
+
+  <!-- Phaser (game engine) -->
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"></script>
+
+  <!-- ethers (wallet + contract calls) -->
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
+
+  <script src="./arcade.js"></script>
+</body>
+</html>
